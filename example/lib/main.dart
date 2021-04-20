@@ -24,13 +24,27 @@ class _JoystickExampleAppState extends State<JoystickExampleApp> {
         appBar: AppBar(
           title: Text('Joystick Example'),
         ),
-        body: GestureDetector(
-          onPanStart: (details) => print('container'),
-          child: Container(
-            width: double.infinity,
-            color: Colors.grey,
+        body: Container(
+          width: double.infinity,
+          color: Colors.grey,
+          child: JoystickArea(
+            onStickUpdate: (details) {
+              print(details.offset);
+              var newX = x + step * details.offset.dx;
+              var newY = y + step * details.offset.dy;
+              newX = newX < 0
+                  ? 0
+                  : (newX > fieldWidth - 20 ? fieldWidth - 20 : newX);
+              newY = newY < 0
+                  ? 0
+                  : (newY > fieldHeight - 20 ? fieldHeight - 20 : newY);
+              setState(() {
+                x = newX;
+                y = newY;
+              });
+            },
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Stack(
                   alignment: Alignment.center,
@@ -54,21 +68,21 @@ class _JoystickExampleAppState extends State<JoystickExampleApp> {
                     ),
                   ],
                 ),
-                Joystick(onStickUpdate: (details) {
-                  print(details.offset);
-                  var newX = x + step * details.offset.dx;
-                  var newY = y + step * details.offset.dy;
-                  newX = newX < 0
-                      ? 0
-                      : (newX > fieldWidth - 20 ? fieldWidth - 20 : newX);
-                  newY = newY < 0
-                      ? 0
-                      : (newY > fieldHeight - 20 ? fieldHeight - 20 : newY);
-                  setState(() {
-                    x = newX;
-                    y = newY;
-                  });
-                }),
+                // Joystick(onStickUpdate: (details) {
+                //   print(details.offset);
+                //   var newX = x + step * details.offset.dx;
+                //   var newY = y + step * details.offset.dy;
+                //   newX = newX < 0
+                //       ? 0
+                //       : (newX > fieldWidth - 20 ? fieldWidth - 20 : newX);
+                //   newY = newY < 0
+                //       ? 0
+                //       : (newY > fieldHeight - 20 ? fieldHeight - 20 : newY);
+                //   setState(() {
+                //     x = newX;
+                //     y = newY;
+                //   });
+                // }),
               ],
             ),
           ),

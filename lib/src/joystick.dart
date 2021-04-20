@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import './joystick_controller.dart';
+
 class Joystick extends StatefulWidget {
   /// Calling with [period] frequency when the stick is dragged.
   final StickDragCallback onStickUpdate;
@@ -15,81 +17,93 @@ class Joystick extends StatefulWidget {
   /// Widget that renders joystick stick, it places in the center of [base] widget.
   final Widget stick;
 
-  Joystick({
+  final JoystickController? controller;
+
+  const Joystick({
+    Key? key,
     required this.onStickUpdate,
     this.period = const Duration(milliseconds: 100),
     this.base = const Base(),
     this.stick = const Stick(),
-  });
+    this.controller,
+  }) : super(key: key);
 
   @override
   _JoystickState createState() => _JoystickState();
 }
 
 class _JoystickState extends State<Joystick> {
-  GlobalKey _baseKey = GlobalKey();
-  GlobalKey _stickKey = GlobalKey();
+  final GlobalKey _baseKey = GlobalKey();
 
   Offset _stickOffset = Offset.zero;
   Timer? _callbackTimer;
+  Offset _start = Offset.zero;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller?.onStickDragStart =
+        (globalPosition) => _stickDragStart(globalPosition);
+    widget.controller?.onStickDragUpdate =
+        (globalPosition) => _stickDragUpdate(globalPosition);
+    widget.controller?.onStickDragEnd = () => _stickDragEnd();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Stack(
-        alignment: Alignment(_stickOffset.dx, _stickOffset.dy),
-        children: [
-          Container(
-            key: _baseKey,
-            child: widget.base,
-          ),
-          GestureDetector(
-            onPanStart: (details) {
-              _onStickUpdate(details.localPosition);
-              _runCallback();
-            },
-            onPanUpdate: (details) => _onStickUpdate(details.localPosition),
-            onPanEnd: (details) {
-              setState(() {
-                _stickOffset = Offset.zero;
-              });
-
-              _callbackTimer?.cancel();
-            },
-            child: Container(
-              key: _stickKey,
-              child: widget.stick,
-            ),
-          ),
-        ],
-      ),
+    return Stack(
+      alignment: Alignment(_stickOffset.dx, _stickOffset.dy),
+      children: [
+        Container(
+          key: _baseKey,
+          child: widget.base,
+        ),
+        GestureDetector(
+          onPanStart: (details) => _stickDragStart(details.globalPosition),
+          onPanUpdate: (details) => _stickDragUpdate(details.globalPosition),
+          onPanEnd: (details) => _stickDragEnd(),
+          child: widget.stick,
+        ),
+      ],
     );
   }
 
-  void _onStickUpdate(Offset offset) {
-    final baseRenderBox =
-        _baseKey.currentContext!.findRenderObject() as RenderBox;
-    final stickRenderBox =
-        _stickKey.currentContext!.findRenderObject() as RenderBox;
+  void _stickDragStart(Offset globalPosition) {
+    _runCallback();
+    _start = globalPosition;
+  }
 
-    var x = (offset.dx - stickRenderBox.size.width / 2) /
-        (baseRenderBox.size.width / 2);
-    if (x > 1) {
-      x = 1;
-    } else if (x < -1) {
-      x = -1;
-    }
-    var y = (offset.dy - stickRenderBox.size.height / 2) /
-        (baseRenderBox.size.height / 2);
-    if (y > 1) {
-      y = 1;
-    } else if (y < -1) {
-      y = -1;
-    }
+  void _stickDragUpdate(Offset globalPosition) {
+    final baseRenderBox =
+        _baseKey.currentContext!.findRenderObject()! as RenderBox;
+
+    final x = _normalizeOffset(
+        (globalPosition.dx - _start.dx) / (baseRenderBox.size.width / 2));
+    final y = _normalizeOffset(
+        (globalPosition.dy - _start.dy) / (baseRenderBox.size.height / 2));
 
     setState(() {
       _stickOffset = Offset(x, y);
     });
+  }
+
+  double _normalizeOffset(double point) {
+    if (point > 1) {
+      return 1;
+    }
+    if (point < -1) {
+      return -1;
+    }
+    return point;
+  }
+
+  void _stickDragEnd() {
+    setState(() {
+      _stickOffset = Offset.zero;
+    });
+
+    _callbackTimer?.cancel();
+    _start = Offset.zero;
   }
 
   void _runCallback() {
@@ -106,13 +120,13 @@ class _JoystickState extends State<Joystick> {
 }
 
 class Base extends StatelessWidget {
-  const Base();
+  const Base({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 200,
       height: 200,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.greenAccent,
         shape: BoxShape.circle,
       ),
@@ -121,13 +135,13 @@ class Base extends StatelessWidget {
 }
 
 class Stick extends StatelessWidget {
-  const Stick();
+  const Stick({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 50,
       height: 50,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.redAccent,
         shape: BoxShape.circle,
       ),
