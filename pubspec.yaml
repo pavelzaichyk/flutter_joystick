@@ -1,8 +1,8 @@
 name: joystick
 description: Joystick package.
 version: 0.0.1
-homepage:
-repository:
+homepage: https://github.com/pavzay/flutter_joystick
+repository: https://github.com/pavzay/flutter_joystick.git
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

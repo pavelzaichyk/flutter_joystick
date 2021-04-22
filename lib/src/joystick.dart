@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import './joystick_controller.dart';
+import 'joystick_base.dart';
+import 'joystick_controller.dart';
+import 'joystick_stick.dart';
 
 class Joystick extends StatefulWidget {
   /// Calling with [period] frequency when the stick is dragged.
@@ -23,8 +25,8 @@ class Joystick extends StatefulWidget {
     Key? key,
     required this.onStickUpdate,
     this.period = const Duration(milliseconds: 100),
-    this.base = const Base(),
-    this.stick = const Stick(),
+    this.base = const JoystickBase(),
+    this.stick = const JoystickStick(),
     this.controller,
   }) : super(key: key);
 
@@ -37,7 +39,7 @@ class _JoystickState extends State<Joystick> {
 
   Offset _stickOffset = Offset.zero;
   Timer? _callbackTimer;
-  Offset _start = Offset.zero;
+  Offset _startDragStickPosition = Offset.zero;
 
   @override
   void initState() {
@@ -70,20 +72,22 @@ class _JoystickState extends State<Joystick> {
 
   void _stickDragStart(Offset globalPosition) {
     _runCallback();
-    _start = globalPosition;
+    _startDragStickPosition = globalPosition;
   }
 
   void _stickDragUpdate(Offset globalPosition) {
     final baseRenderBox =
         _baseKey.currentContext!.findRenderObject()! as RenderBox;
 
-    final x = _normalizeOffset(
-        (globalPosition.dx - _start.dx) / (baseRenderBox.size.width / 2));
-    final y = _normalizeOffset(
-        (globalPosition.dy - _start.dy) / (baseRenderBox.size.height / 2));
+    final xOffset = _normalizeOffset(
+        (globalPosition.dx - _startDragStickPosition.dx) /
+            (baseRenderBox.size.width / 2));
+    final yOffset = _normalizeOffset(
+        (globalPosition.dy - _startDragStickPosition.dy) /
+            (baseRenderBox.size.height / 2));
 
     setState(() {
-      _stickOffset = Offset(x, y);
+      _stickOffset = Offset(xOffset, yOffset);
     });
   }
 
@@ -103,7 +107,7 @@ class _JoystickState extends State<Joystick> {
     });
 
     _callbackTimer?.cancel();
-    _start = Offset.zero;
+    _startDragStickPosition = Offset.zero;
   }
 
   void _runCallback() {
@@ -116,36 +120,6 @@ class _JoystickState extends State<Joystick> {
   void dispose() {
     _callbackTimer?.cancel();
     super.dispose();
-  }
-}
-
-class Base extends StatelessWidget {
-  const Base({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 200,
-      height: 200,
-      decoration: const BoxDecoration(
-        color: Colors.greenAccent,
-        shape: BoxShape.circle,
-      ),
-    );
-  }
-}
-
-class Stick extends StatelessWidget {
-  const Stick({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 50,
-      height: 50,
-      decoration: const BoxDecoration(
-        color: Colors.redAccent,
-        shape: BoxShape.circle,
-      ),
-    );
   }
 }
 

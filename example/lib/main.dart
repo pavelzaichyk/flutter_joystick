@@ -5,18 +5,7 @@ void main() {
   runApp(JoystickExampleApp());
 }
 
-class JoystickExampleApp extends StatefulWidget {
-  @override
-  _JoystickExampleAppState createState() => _JoystickExampleAppState();
-}
-
-class _JoystickExampleAppState extends State<JoystickExampleApp> {
-  final fieldHeight = 400.0;
-  final fieldWidth = 300.0;
-  final step = 5;
-  double x = 140;
-  double y = 140;
-
+class JoystickExampleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,70 +13,85 @@ class _JoystickExampleAppState extends State<JoystickExampleApp> {
         appBar: AppBar(
           title: Text('Joystick Example'),
         ),
-        body: Container(
-          width: double.infinity,
-          color: Colors.grey,
-          child: JoystickArea(
-            onStickUpdate: (details) {
-              print(details.offset);
-              var newX = x + step * details.offset.dx;
-              var newY = y + step * details.offset.dy;
-              newX = newX < 0
-                  ? 0
-                  : (newX > fieldWidth - 20 ? fieldWidth - 20 : newX);
-              newY = newY < 0
-                  ? 0
-                  : (newY > fieldHeight - 20 ? fieldHeight - 20 : newY);
-              setState(() {
-                x = newX;
-                y = newY;
-              });
-            },
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      color: Colors.green,
-                      width: fieldWidth,
-                      height: fieldHeight,
-                    ),
-                    Positioned(
-                      left: x,
-                      top: y,
-                      child: Container(
-                        width: 20,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                // Joystick(onStickUpdate: (details) {
-                //   print(details.offset);
-                //   var newX = x + step * details.offset.dx;
-                //   var newY = y + step * details.offset.dy;
-                //   newX = newX < 0
-                //       ? 0
-                //       : (newX > fieldWidth - 20 ? fieldWidth - 20 : newX);
-                //   newY = newY < 0
-                //       ? 0
-                //       : (newY > fieldHeight - 20 ? fieldHeight - 20 : newY);
-                //   setState(() {
-                //     x = newX;
-                //     y = newY;
-                //   });
-                // }),
-              ],
-            ),
-          ),
-        ),
+        body: Field(),
       ),
     );
+  }
+}
+
+class Field extends StatefulWidget {
+  @override
+  _FieldState createState() => _FieldState();
+}
+
+class _FieldState extends State<Field> {
+  final _ballSize = 20.0;
+  final _step = 10;
+  late double _fieldHeight;
+  late double _fieldWidth;
+  late double _x;
+  late double _y;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _fieldWidth = MediaQuery.of(context).size.width;
+    _fieldHeight = MediaQuery.of(context).size.height;
+    setState(() {
+      _x = _fieldWidth / 2 - _ballSize / 2;
+      _y = _fieldHeight / 2 - _ballSize / 2;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return JoystickArea(
+      initialJoystickAlignment: Alignment(0, 0.9),
+      onStickUpdate: _updateJoystick,
+      child: Stack(
+        children: [
+          Container(
+            color: Colors.green,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+          Positioned(
+            left: _x,
+            top: _y,
+            child: Container(
+              width: _ballSize,
+              height: _ballSize,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.redAccent,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    spreadRadius: 2,
+                    blurRadius: 3,
+                    offset: const Offset(0, 3),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _updateJoystick(StickDragDetails details) {
+    var newX = _x + _step * details.offset.dx;
+    var newY = _y + _step * details.offset.dy;
+    newX = newX < 0
+        ? 0
+        : (newX > _fieldWidth - _ballSize ? _fieldWidth - _ballSize : newX);
+    newY = newY < 0
+        ? 0
+        : (newY > _fieldHeight - _ballSize ? _fieldHeight - _ballSize : newY);
+    setState(() {
+      _x = newX;
+      _y = newY;
+    });
   }
 }
