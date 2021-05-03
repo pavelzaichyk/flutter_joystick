@@ -2,17 +2,41 @@ import 'package:flutter/material.dart';
 
 import './joystick.dart';
 import './joystick_controller.dart';
+import 'joystick_stick.dart';
 
+/// Allow to place the joystick in any place where user click.
+/// Just need to place other widgets as child of [JoystickArea] widget.
 class JoystickArea extends StatefulWidget {
+  /// The [child] contained by the joystick area.
   final Widget? child;
-  final StickDragCallback onStickUpdate;
+
+  /// Initial joystick alignment with respect to the joystick area, by default [Alignment.bottomCenter].
   final Alignment initialJoystickAlignment;
+
+  /// Callback, which is called with [period] frequency when the stick is dragged.
+  final StickDragCallback onStickUpdate;
+
+  /// Frequency of calling [onStickUpdate] from the moment the stick is dragged, by default 100 milliseconds.
+  final Duration period;
+
+  /// Widget that renders joystick base.
+  final Widget? base;
+
+  /// Widget that renders joystick stick, it places in the center of [base] widget.
+  final Widget stick;
+
+  /// Mode possible direction
+  final JoystickMode mode;
 
   const JoystickArea({
     Key? key,
-    required this.onStickUpdate,
     this.child,
     this.initialJoystickAlignment = Alignment.bottomCenter,
+    required this.onStickUpdate,
+    this.period = const Duration(milliseconds: 100),
+    this.base,
+    this.stick = const JoystickStick(),
+    this.mode = JoystickMode.all,
   }) : super(key: key);
 
   @override
@@ -35,34 +59,9 @@ class _JoystickAreaState extends State<JoystickArea> {
   Widget build(BuildContext context) {
     return GestureDetector(
       key: _areaKey,
-      onPanStart: (details) {
-        final localPosition = details.localPosition;
-        final joystickSize = _joystickKey.currentContext!.size!;
-
-        final areaBox =
-            _areaKey.currentContext!.findRenderObject()! as RenderBox;
-
-        final halfWidth = areaBox.size.width / 2;
-        final halfHeight = areaBox.size.height / 2;
-
-        final xAlignment = (localPosition.dx - halfWidth) /
-            (halfWidth - joystickSize.width / 2);
-        final yAlignment = (localPosition.dy - halfHeight) /
-            (halfHeight - joystickSize.height / 2);
-
-        setState(() {
-          _joystickAlignment = Alignment(xAlignment, yAlignment);
-        });
-        _controller.start(details.globalPosition);
-      },
-      onPanUpdate: (details) => _controller.update(details.globalPosition),
-      onPanEnd: (details) {
-        setState(() {
-          _joystickAlignment = widget.initialJoystickAlignment;
-        });
-
-        _controller.end();
-      },
+      onPanStart: _startDrag,
+      onPanUpdate: _updateDrag,
+      onPanEnd: _endDrag,
       child: Container(
         width: double.infinity,
         height: double.infinity,
@@ -76,11 +75,47 @@ class _JoystickAreaState extends State<JoystickArea> {
                 key: _joystickKey,
                 controller: _controller,
                 onStickUpdate: widget.onStickUpdate,
+                period: widget.period,
+                mode: widget.mode,
+                base: widget.base,
+                stick: widget.stick,
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  void _startDrag(DragStartDetails details) {
+    final localPosition = details.localPosition;
+    final joystickSize = _joystickKey.currentContext!.size!;
+
+    final areaBox = _areaKey.currentContext!.findRenderObject()! as RenderBox;
+
+    final halfWidth = areaBox.size.width / 2;
+    final halfHeight = areaBox.size.height / 2;
+
+    final xAlignment =
+        (localPosition.dx - halfWidth) / (halfWidth - joystickSize.width / 2);
+    final yAlignment = (localPosition.dy - halfHeight) /
+        (halfHeight - joystickSize.height / 2);
+
+    setState(() {
+      _joystickAlignment = Alignment(xAlignment, yAlignment);
+    });
+    _controller.start(details.globalPosition);
+  }
+
+  void _updateDrag(DragUpdateDetails details) {
+    _controller.update(details.globalPosition);
+  }
+
+  void _endDrag(DragEndDetails details) {
+    setState(() {
+      _joystickAlignment = widget.initialJoystickAlignment;
+    });
+
+    _controller.end();
   }
 }

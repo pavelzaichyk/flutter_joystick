@@ -6,27 +6,33 @@ import 'joystick_base.dart';
 import 'joystick_controller.dart';
 import 'joystick_stick.dart';
 
+/// Joystick widget
 class Joystick extends StatefulWidget {
-  /// Calling with [period] frequency when the stick is dragged.
+  /// Callback, which is called with [period] frequency when the stick is dragged.
   final StickDragCallback onStickUpdate;
 
-  /// Frequency of calling [onStickUpdate] from the moment the stick is dragged.
+  /// Frequency of calling [onStickUpdate] from the moment the stick is dragged, by default 100 milliseconds.
   final Duration period;
 
-  /// Widget that renders joystick base.
-  final Widget base;
+  /// Widget that renders joystick base, by default [JoystickBase].
+  final Widget? base;
 
   /// Widget that renders joystick stick, it places in the center of [base] widget.
   final Widget stick;
 
+  /// Controller allows to control joystick events outside the widget.
   final JoystickController? controller;
+
+  /// Mode possible directions of the joystick stick, by default [JoystickMode.all]
+  final JoystickMode mode;
 
   const Joystick({
     Key? key,
     required this.onStickUpdate,
     this.period = const Duration(milliseconds: 100),
-    this.base = const JoystickBase(),
+    this.base,
     this.stick = const JoystickStick(),
+    this.mode = JoystickMode.all,
     this.controller,
   }) : super(key: key);
 
@@ -58,7 +64,7 @@ class _JoystickState extends State<Joystick> {
       children: [
         Container(
           key: _baseKey,
-          child: widget.base,
+          child: widget.base ?? JoystickBase(mode: widget.mode),
         ),
         GestureDetector(
           onPanStart: (details) => _stickDragStart(details.globalPosition),
@@ -79,16 +85,30 @@ class _JoystickState extends State<Joystick> {
     final baseRenderBox =
         _baseKey.currentContext!.findRenderObject()! as RenderBox;
 
-    final xOffset = _normalizeOffset(
-        (globalPosition.dx - _startDragStickPosition.dx) /
-            (baseRenderBox.size.width / 2));
-    final yOffset = _normalizeOffset(
-        (globalPosition.dy - _startDragStickPosition.dy) /
-            (baseRenderBox.size.height / 2));
+    final stickOffset =
+        _calculateStickOffset(globalPosition, baseRenderBox.size);
 
     setState(() {
-      _stickOffset = Offset(xOffset, yOffset);
+      _stickOffset = stickOffset;
     });
+  }
+
+  Offset _calculateStickOffset(Offset globalPosition, Size size) {
+    final xOffset = widget.mode == JoystickMode.vertical
+        ? 0.0
+        : _normalizeOffset((globalPosition.dx - _startDragStickPosition.dx) /
+            (size.width / 2));
+    final yOffset = widget.mode == JoystickMode.horizontal
+        ? 0.0
+        : _normalizeOffset((globalPosition.dy - _startDragStickPosition.dy) /
+            (size.height / 2));
+
+    if (widget.mode != JoystickMode.onlyTwoDirections) {
+      return Offset(xOffset, yOffset);
+    }
+
+    return Offset(xOffset.abs() > yOffset.abs() ? xOffset : 0,
+        yOffset.abs() > xOffset.abs() ? yOffset : 0);
   }
 
   double _normalizeOffset(double point) {
@@ -125,6 +145,7 @@ class _JoystickState extends State<Joystick> {
 
 typedef StickDragCallback = void Function(StickDragDetails details);
 
+/// Contains the stick offset from the center of the base.
 class StickDragDetails {
   /// dx or dy can be from -1.0 to +1.0.
   /// dx - the stick offset in the horizontal direction.
@@ -132,4 +153,19 @@ class StickDragDetails {
   final Offset offset;
 
   StickDragDetails(this.offset);
+}
+
+/// Possible directions of the joystick stick.
+enum JoystickMode {
+  /// allow move the stick in any directions: vertical, horizontal and diagonal.
+  all,
+
+  /// allow move the stick only in vertical direction.
+  vertical,
+
+  /// allow move the stick only in horizontal direction.
+  horizontal,
+
+  /// allow move the stick only in horizontal and vertical directions, not diagonal.
+  onlyTwoDirections,
 }
