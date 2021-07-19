@@ -14,9 +14,9 @@ class JoystickArea extends StatefulWidget {
   final Alignment initialJoystickAlignment;
 
   /// Callback, which is called with [period] frequency when the stick is dragged.
-  final StickDragCallback onStickUpdate;
+  final StickDragCallback listener;
 
-  /// Frequency of calling [onStickUpdate] from the moment the stick is dragged, by default 100 milliseconds.
+  /// Frequency of calling [listener] from the moment the stick is dragged, by default 100 milliseconds.
   final Duration period;
 
   /// Widget that renders joystick base.
@@ -32,7 +32,7 @@ class JoystickArea extends StatefulWidget {
     Key? key,
     this.child,
     this.initialJoystickAlignment = Alignment.bottomCenter,
-    required this.onStickUpdate,
+    required this.listener,
     this.period = const Duration(milliseconds: 100),
     this.base,
     this.stick = const JoystickStick(),
@@ -74,7 +74,7 @@ class _JoystickAreaState extends State<JoystickArea> {
               child: Joystick(
                 key: _joystickKey,
                 controller: _controller,
-                onStickUpdate: widget.onStickUpdate,
+                listener: widget.listener,
                 period: widget.period,
                 mode: widget.mode,
                 base: widget.base,

@@ -5,6 +5,9 @@ void main() {
   runApp(JoystickExampleApp());
 }
 
+const ballSize = 20.0;
+const step = 10.0;
+
 class JoystickExampleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,85 +16,153 @@ class JoystickExampleApp extends StatelessWidget {
         appBar: AppBar(
           title: Text('Joystick Example'),
         ),
-        body: Field(),
+        body: MainPage(),
       ),
     );
   }
 }
 
-class Field extends StatefulWidget {
-  @override
-  _FieldState createState() => _FieldState();
-}
-
-class _FieldState extends State<Field> {
-  final _ballSize = 20.0;
-  final _step = 10;
-  late double _fieldHeight;
-  late double _fieldWidth;
-  late double _x;
-  late double _y;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _fieldWidth = MediaQuery.of(context).size.width;
-    _fieldHeight = MediaQuery.of(context).size.height;
-    setState(() {
-      _x = _fieldWidth / 2 - _ballSize / 2;
-      _y = _fieldHeight / 2 - _ballSize / 2;
-    });
-  }
-
+class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return JoystickArea(
-      initialJoystickAlignment: Alignment(0, 0.9),
-      onStickUpdate: _updateJoystick,
-      child: Stack(
+    return Container(
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            color: Colors.green,
-            width: double.infinity,
-            height: double.infinity,
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => JoystickExample()),
+              );
+            },
+            child: Text('Joystick'),
           ),
-          Positioned(
-            left: _x,
-            top: _y,
-            child: Container(
-              width: _ballSize,
-              height: _ballSize,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.redAccent,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black12,
-                    spreadRadius: 2,
-                    blurRadius: 3,
-                    offset: const Offset(0, 3),
-                  )
-                ],
-              ),
-            ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => JoystickAreaExample()),
+              );
+            },
+            child: Text('Joystick Area'),
           ),
         ],
       ),
     );
   }
+}
 
-  void _updateJoystick(StickDragDetails details) {
-    var newX = _x + _step * details.offset.dx;
-    var newY = _y + _step * details.offset.dy;
-    newX = newX < 0
-        ? 0
-        : (newX > _fieldWidth - _ballSize ? _fieldWidth - _ballSize : newX);
-    newY = newY < 0
-        ? 0
-        : (newY > _fieldHeight - _ballSize ? _fieldHeight - _ballSize : newY);
-    setState(() {
-      _x = newX;
-      _y = newY;
-    });
+class JoystickExample extends StatefulWidget {
+  const JoystickExample({Key? key}) : super(key: key);
+
+  @override
+  _JoystickExampleState createState() => _JoystickExampleState();
+}
+
+class _JoystickExampleState extends State<JoystickExample> {
+  double _x = 100;
+  double _y = 100;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.green,
+      appBar: AppBar(
+        title: Text('Joystick Example'),
+      ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Container(
+              color: Colors.green,
+            ),
+            Ball(_x, _y),
+            Align(
+              alignment: Alignment(0, 0.8),
+              child: Joystick(listener: (details) {
+                setState(() {
+                  _x = _x + step * details.x;
+                  _y = _y + step * details.y;
+                });
+              }),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class JoystickAreaExample extends StatefulWidget {
+  const JoystickAreaExample({Key? key}) : super(key: key);
+
+  @override
+  _JoystickAreaExampleState createState() => _JoystickAreaExampleState();
+}
+
+class _JoystickAreaExampleState extends State<JoystickAreaExample> {
+  double _x = 100;
+  double _y = 100;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.green,
+      appBar: AppBar(
+        title: Text('Joystick Area Example'),
+      ),
+      body: SafeArea(
+        child: JoystickArea(
+          initialJoystickAlignment: Alignment(0, 0.8),
+          listener: (details) {
+            setState(() {
+              _x = _x + step * details.x;
+              _y = _y + step * details.y;
+            });
+          },
+          child: Stack(
+            children: [
+              Container(
+                color: Colors.green,
+              ),
+              Ball(_x, _y),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Ball extends StatelessWidget {
+  final double x;
+  final double y;
+
+  const Ball(this.x, this.y);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      left: x,
+      top: y,
+      child: Container(
+        width: ballSize,
+        height: ballSize,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.redAccent,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              spreadRadius: 2,
+              blurRadius: 3,
+              offset: const Offset(0, 3),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

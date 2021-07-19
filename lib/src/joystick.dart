@@ -9,9 +9,9 @@ import 'joystick_stick.dart';
 /// Joystick widget
 class Joystick extends StatefulWidget {
   /// Callback, which is called with [period] frequency when the stick is dragged.
-  final StickDragCallback onStickUpdate;
+  final StickDragCallback listener;
 
-  /// Frequency of calling [onStickUpdate] from the moment the stick is dragged, by default 100 milliseconds.
+  /// Frequency of calling [listener] from the moment the stick is dragged, by default 100 milliseconds.
   final Duration period;
 
   /// Widget that renders joystick base, by default [JoystickBase].
@@ -28,7 +28,7 @@ class Joystick extends StatefulWidget {
 
   const Joystick({
     Key? key,
-    required this.onStickUpdate,
+    required this.listener,
     this.period = const Duration(milliseconds: 100),
     this.base,
     this.stick = const JoystickStick(),
@@ -107,6 +107,7 @@ class _JoystickState extends State<Joystick> {
       return Offset(xOffset, yOffset);
     }
 
+    //only vertical and horizontal
     return Offset(xOffset.abs() > yOffset.abs() ? xOffset : 0,
         yOffset.abs() > xOffset.abs() ? yOffset : 0);
   }
@@ -132,7 +133,7 @@ class _JoystickState extends State<Joystick> {
 
   void _runCallback() {
     _callbackTimer = Timer.periodic(widget.period, (timer) {
-      widget.onStickUpdate(StickDragDetails(_stickOffset));
+      widget.listener(StickDragDetails(_stickOffset.dx, _stickOffset.dy));
     });
   }
 
@@ -147,12 +148,13 @@ typedef StickDragCallback = void Function(StickDragDetails details);
 
 /// Contains the stick offset from the center of the base.
 class StickDragDetails {
-  /// dx or dy can be from -1.0 to +1.0.
-  /// dx - the stick offset in the horizontal direction.
-  /// dy - the stick offset in the vertical direction.
-  final Offset offset;
+  /// x - the stick offset in the horizontal direction. Can be from -1.0 to +1.0.
+  final double x;
 
-  StickDragDetails(this.offset);
+  /// y - the stick offset in the vertical direction. Can be from -1.0 to +1.0.
+  final double y;
+
+  StickDragDetails(this.x, this.y);
 }
 
 /// Possible directions of the joystick stick.
