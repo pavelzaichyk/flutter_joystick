@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:joystick/joystick.dart';
+
+import '../joystick.dart';
 
 class JoystickBase extends StatelessWidget {
   final JoystickMode mode;

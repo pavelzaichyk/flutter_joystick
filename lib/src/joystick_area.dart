@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import './joystick.dart';
 import './joystick_controller.dart';
-import 'joystick_stick.dart';
+import './joystick_stick.dart';
 
 /// Allow to place the joystick in any place where user click.
 /// Just need to place other widgets as child of [JoystickArea] widget.

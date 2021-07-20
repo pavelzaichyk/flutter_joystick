@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:joystick/joystick.dart';
+import 'package:flutter_joystick/joystick.dart';
 
 void main() {
   runApp(JoystickExampleApp());
@@ -66,6 +66,12 @@ class _JoystickExampleState extends State<JoystickExample> {
   double _y = 100;
 
   @override
+  void didChangeDependencies() {
+    _x = MediaQuery.of(context).size.width / 2 - ballSize / 2;
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.green,
@@ -105,6 +111,12 @@ class JoystickAreaExample extends StatefulWidget {
 class _JoystickAreaExampleState extends State<JoystickAreaExample> {
   double _x = 100;
   double _y = 100;
+
+  @override
+  void didChangeDependencies() {
+    _x = MediaQuery.of(context).size.width / 2 - ballSize / 2;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {

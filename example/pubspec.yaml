@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  joystick:
+  flutter_joystick:
     path: ../
 
 dev_dependencies:
