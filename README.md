@@ -31,7 +31,6 @@ JoystickArea(
 
 If you found this package helpful and want to thank me:
 
-[![Buy Me A Coffee](https://cdn.buymeacoffee.com/buttons/default-orange.png)](https://www.buymeacoffee.com/rebeloid)
-
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/pavelzaichyk)
+[![Buy Me A Coffee](https://img.shields.io/badge/-Buy%20me%20a%20coffee-FFDD00)](https://www.buymeacoffee.com/rebeloid)
+[![PayPal](https://img.shields.io/badge/-PayPal-066BB7)](https://paypal.me/pavelzaichyk)
 
