@@ -31,7 +31,7 @@ JoystickArea(
 
 If you found this package helpful and want to thank me:
 
-<a href="https://www.buymeacoffee.com/rebeloid" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+[![Buy Me A Coffee](https://cdn.buymeacoffee.com/buttons/default-orange.png)](https://www.buymeacoffee.com/rebeloid)
 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/pavelzaichyk)
 
