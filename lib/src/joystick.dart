@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'joystick_base.dart';
 import 'joystick_controller.dart';
 import 'joystick_stick.dart';
+import 'joystick_stick_offset_calculator.dart';
 
 /// Joystick widget
 class Joystick extends StatefulWidget {
@@ -26,6 +27,8 @@ class Joystick extends StatefulWidget {
   /// Mode possible directions of the joystick stick, by default [JoystickMode.all]
   final JoystickMode mode;
 
+  final StickOffsetCalculator stickOffsetCalculator;
+
   const Joystick({
     Key? key,
     required this.listener,
@@ -33,6 +36,7 @@ class Joystick extends StatefulWidget {
     this.base,
     this.stick = const JoystickStick(),
     this.mode = JoystickMode.all,
+    this.stickOffsetCalculator = const CircleStickOffsetCalculator(),
     this.controller,
   }) : super(key: key);
 
@@ -85,41 +89,16 @@ class _JoystickState extends State<Joystick> {
     final baseRenderBox =
         _baseKey.currentContext!.findRenderObject()! as RenderBox;
 
-    final stickOffset =
-        _calculateStickOffset(globalPosition, baseRenderBox.size);
+    final stickOffset = widget.stickOffsetCalculator.calculate(
+      mode: widget.mode,
+      startDragStickPosition: _startDragStickPosition,
+      currentDragStickPosition: globalPosition,
+      baseSize: baseRenderBox.size,
+    );
 
     setState(() {
       _stickOffset = stickOffset;
     });
-  }
-
-  Offset _calculateStickOffset(Offset globalPosition, Size size) {
-    final xOffset = widget.mode == JoystickMode.vertical
-        ? 0.0
-        : _normalizeOffset((globalPosition.dx - _startDragStickPosition.dx) /
-            (size.width / 2));
-    final yOffset = widget.mode == JoystickMode.horizontal
-        ? 0.0
-        : _normalizeOffset((globalPosition.dy - _startDragStickPosition.dy) /
-            (size.height / 2));
-
-    if (widget.mode != JoystickMode.onlyTwoDirections) {
-      return Offset(xOffset, yOffset);
-    }
-
-    //only vertical and horizontal
-    return Offset(xOffset.abs() > yOffset.abs() ? xOffset : 0,
-        yOffset.abs() > xOffset.abs() ? yOffset : 0);
-  }
-
-  double _normalizeOffset(double point) {
-    if (point > 1) {
-      return 1;
-    }
-    if (point < -1) {
-      return -1;
-    }
-    return point;
   }
 
   void _stickDragEnd() {
