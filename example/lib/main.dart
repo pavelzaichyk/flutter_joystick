@@ -54,6 +54,16 @@ class MainPage extends StatelessWidget {
             },
             child: const Text('Joystick Area'),
           ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const SquareJoystickExample()),
+              );
+            },
+            child: const Text('Square Joystick'),
+          ),
         ],
       ),
     );
@@ -70,6 +80,7 @@ class JoystickExample extends StatefulWidget {
 class _JoystickExampleState extends State<JoystickExample> {
   double _x = 100;
   double _y = 100;
+  JoystickMode _joystickMode = JoystickMode.all;
 
   @override
   void didChangeDependencies() {
@@ -82,7 +93,17 @@ class _JoystickExampleState extends State<JoystickExample> {
     return Scaffold(
       backgroundColor: Colors.green,
       appBar: AppBar(
-        title: const Text('Joystick Example'),
+        title: const Text('Joystick'),
+        actions: [
+          JoystickModeDropdown(
+            mode: _joystickMode,
+            onChanged: (JoystickMode value) {
+              setState(() {
+                _joystickMode = value;
+              });
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: Stack(
@@ -93,12 +114,15 @@ class _JoystickExampleState extends State<JoystickExample> {
             Ball(_x, _y),
             Align(
               alignment: const Alignment(0, 0.8),
-              child: Joystick(listener: (details) {
-                setState(() {
-                  _x = _x + step * details.x;
-                  _y = _y + step * details.y;
-                });
-              }),
+              child: Joystick(
+                mode: _joystickMode,
+                listener: (details) {
+                  setState(() {
+                    _x = _x + step * details.x;
+                    _y = _y + step * details.y;
+                  });
+                },
+              ),
             ),
           ],
         ),
@@ -117,6 +141,7 @@ class JoystickAreaExample extends StatefulWidget {
 class _JoystickAreaExampleState extends State<JoystickAreaExample> {
   double _x = 100;
   double _y = 100;
+  JoystickMode _joystickMode = JoystickMode.all;
 
   @override
   void didChangeDependencies() {
@@ -129,10 +154,21 @@ class _JoystickAreaExampleState extends State<JoystickAreaExample> {
     return Scaffold(
       backgroundColor: Colors.green,
       appBar: AppBar(
-        title: const Text('Joystick Area Example'),
+        title: const Text('Joystick Area'),
+        actions: [
+          JoystickModeDropdown(
+            mode: _joystickMode,
+            onChanged: (JoystickMode value) {
+              setState(() {
+                _joystickMode = value;
+              });
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: JoystickArea(
+          mode: _joystickMode,
           initialJoystickAlignment: const Alignment(0, 0.8),
           listener: (details) {
             setState(() {
@@ -146,6 +182,107 @@ class _JoystickAreaExampleState extends State<JoystickAreaExample> {
                 color: Colors.green,
               ),
               Ball(_x, _y),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SquareJoystickExample extends StatefulWidget {
+  const SquareJoystickExample({Key? key}) : super(key: key);
+
+  @override
+  _SquareJoystickExampleState createState() => _SquareJoystickExampleState();
+}
+
+class _SquareJoystickExampleState extends State<SquareJoystickExample> {
+  double _x = 100;
+  double _y = 100;
+  JoystickMode _joystickMode = JoystickMode.all;
+
+  @override
+  void didChangeDependencies() {
+    _x = MediaQuery.of(context).size.width / 2 - ballSize / 2;
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.green,
+      appBar: AppBar(
+        title: const Text('Square Joystick'),
+        actions: [
+          JoystickModeDropdown(
+            mode: _joystickMode,
+            onChanged: (JoystickMode value) {
+              setState(() {
+                _joystickMode = value;
+              });
+            },
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Container(
+              color: Colors.green,
+            ),
+            Ball(_x, _y),
+            Align(
+              alignment: const Alignment(0, 0.8),
+              child: Joystick(
+                mode: _joystickMode,
+                base: JoystickSquareBase(mode: _joystickMode),
+                stickOffsetCalculator: const RectangleStickOffsetCalculator(),
+                listener: (details) {
+                  setState(() {
+                    _x = _x + step * details.x;
+                    _y = _y + step * details.y;
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class JoystickModeDropdown extends StatelessWidget {
+  final JoystickMode mode;
+  final ValueChanged<JoystickMode> onChanged;
+
+  const JoystickModeDropdown(
+      {Key? key, required this.mode, required this.onChanged})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 150,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16.0),
+        child: FittedBox(
+          child: DropdownButton(
+            value: mode,
+            onChanged: (v) {
+              onChanged(v as JoystickMode);
+            },
+            items: const [
+              DropdownMenuItem(
+                  child: Text('All Directions'), value: JoystickMode.all),
+              DropdownMenuItem(
+                  child: Text('Vertical And Horizontal'),
+                  value: JoystickMode.onlyTwoDirections),
+              DropdownMenuItem(
+                  child: Text('Horizontal'), value: JoystickMode.horizontal),
+              DropdownMenuItem(
+                  child: Text('Vertical'), value: JoystickMode.vertical),
             ],
           ),
         ),
