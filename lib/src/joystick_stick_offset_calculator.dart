@@ -44,7 +44,7 @@ class CircleStickOffsetCalculator implements StickOffsetCalculator {
         return Offset(0.0, yOffset);
       case JoystickMode.horizontal:
         return Offset(xOffset, 0.0);
-      case JoystickMode.onlyTwoDirections:
+      case JoystickMode.horizontalAndVertical:
         return Offset(xOffset.abs() > yOffset.abs() ? xOffset : 0,
             yOffset.abs() > xOffset.abs() ? yOffset : 0);
     }
@@ -74,7 +74,7 @@ class RectangleStickOffsetCalculator implements StickOffsetCalculator {
         return Offset(0.0, yOffset);
       case JoystickMode.horizontal:
         return Offset(xOffset, 0.0);
-      case JoystickMode.onlyTwoDirections:
+      case JoystickMode.horizontalAndVertical:
         return Offset(xOffset.abs() > yOffset.abs() ? xOffset : 0,
             yOffset.abs() > xOffset.abs() ? yOffset : 0);
     }

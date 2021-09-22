@@ -18,15 +18,16 @@ class Joystick extends StatefulWidget {
   /// Widget that renders joystick base, by default [JoystickBase].
   final Widget? base;
 
-  /// Widget that renders joystick stick, it places in the center of [base] widget.
+  /// Widget that renders joystick stick, it places in the center of [base] widget, by default [JoystickStick].
   final Widget stick;
 
   /// Controller allows to control joystick events outside the widget.
   final JoystickController? controller;
 
-  /// Mode possible directions of the joystick stick, by default [JoystickMode.all]
+  /// Possible directions mode of the joystick stick, by default [JoystickMode.all]
   final JoystickMode mode;
 
+  /// Calculate offset of the stick based on the stick drag start position and the current stick position.
   final StickOffsetCalculator stickOffsetCalculator;
 
   const Joystick({
@@ -138,7 +139,7 @@ class StickDragDetails {
 
 /// Possible directions of the joystick stick.
 enum JoystickMode {
-  /// allow move the stick in any directions: vertical, horizontal and diagonal.
+  /// allow move the stick in any direction: vertical, horizontal and diagonal.
   all,
 
   /// allow move the stick only in vertical direction.
@@ -148,5 +149,5 @@ enum JoystickMode {
   horizontal,
 
   /// allow move the stick only in horizontal and vertical directions, not diagonal.
-  onlyTwoDirections,
+  horizontalAndVertical,
 }

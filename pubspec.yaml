@@ -1,5 +1,5 @@
 name: flutter_joystick
-description: Joystick Flutter package.
+description: A virtual joystick for Flutter applications.
 version: 0.0.1
 homepage: https://github.com/pavzay/flutter_joystick
 repository: https://github.com/pavzay/flutter_joystick

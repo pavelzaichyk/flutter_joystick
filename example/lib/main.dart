@@ -278,7 +278,7 @@ class JoystickModeDropdown extends StatelessWidget {
                   child: Text('All Directions'), value: JoystickMode.all),
               DropdownMenuItem(
                   child: Text('Vertical And Horizontal'),
-                  value: JoystickMode.onlyTwoDirections),
+                  value: JoystickMode.horizontalAndVertical),
               DropdownMenuItem(
                   child: Text('Horizontal'), value: JoystickMode.horizontal),
               DropdownMenuItem(

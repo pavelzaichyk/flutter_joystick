@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_joystick/joystick.dart';
 
 import './joystick.dart';
 import './joystick_controller.dart';
@@ -10,7 +11,7 @@ class JoystickArea extends StatefulWidget {
   /// The [child] contained by the joystick area.
   final Widget? child;
 
-  /// Initial joystick alignment with respect to the joystick area, by default [Alignment.bottomCenter].
+  /// Initial joystick alignment relative to the joystick area, by default [Alignment.bottomCenter].
   final Alignment initialJoystickAlignment;
 
   /// Callback, which is called with [period] frequency when the stick is dragged.
@@ -19,14 +20,17 @@ class JoystickArea extends StatefulWidget {
   /// Frequency of calling [listener] from the moment the stick is dragged, by default 100 milliseconds.
   final Duration period;
 
-  /// Widget that renders joystick base.
+  /// Widget that renders joystick base, by default [JoystickBase].
   final Widget? base;
 
-  /// Widget that renders joystick stick, it places in the center of [base] widget.
+  /// Widget that renders joystick stick, it places in the center of [base] widget, by default [JoystickStick].
   final Widget stick;
 
   /// Mode possible direction
   final JoystickMode mode;
+
+  /// Calculate offset of the stick based on the stick drag start position and the current stick position.
+  final StickOffsetCalculator stickOffsetCalculator;
 
   const JoystickArea({
     Key? key,
@@ -37,6 +41,7 @@ class JoystickArea extends StatefulWidget {
     this.base,
     this.stick = const JoystickStick(),
     this.mode = JoystickMode.all,
+    this.stickOffsetCalculator = const CircleStickOffsetCalculator(),
   }) : super(key: key);
 
   @override
