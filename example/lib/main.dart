@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_joystick/joystick.dart';
+import 'package:flutter_joystick/flutter_joystick.dart';
 
 void main() {
   runApp(const JoystickExampleApp());

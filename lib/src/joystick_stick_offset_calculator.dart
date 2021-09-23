@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
-import '../joystick.dart';
+import 'joystick.dart';
 
 abstract class StickOffsetCalculator {
   Offset calculate({

@@ -1,7 +1,7 @@
 # Flutter Joystick
 
 [![Pub](https://img.shields.io/pub/v/flutter_joystick.svg)](https://pub.dev/packages/flutter_joystick)
-[![License](https://img.shields.io/github/license/pavzay/flutter_unity_ads)](https://github.com/pavzay/flutter_unity_ads/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/pavzay/flutter_joystick)](https://github.com/pavzay/flutter_joystick/blob/master/LICENSE)
 [![Pub likes](https://badgen.net/pub/likes/flutter_joystick)](https://pub.dev/packages/flutter_joystick/score)
 [![Pub popularity](https://badgen.net/pub/popularity/flutter_joystick)](https://pub.dev/packages/flutter_joystick/score)
 [![Pub points](https://badgen.net/pub/points/flutter_joystick)](https://pub.dev/packages/flutter_joystick/score)
