@@ -106,6 +106,10 @@ class _JoystickState extends State<Joystick> {
     setState(() {
       _stickOffset = Offset.zero;
     });
+    
+    // update the widget once more so that we send out a 0, instead of having
+    // the joystick "hang" at the last known position
+    widget.listener(StickDragDetails(_stickOffset.dx, _stickOffset.dy));
 
     _callbackTimer?.cancel();
     _startDragStickPosition = Offset.zero;
