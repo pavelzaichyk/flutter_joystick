@@ -32,6 +32,12 @@ class JoystickArea extends StatefulWidget {
   /// Calculate offset of the stick based on the stick drag start position and the current stick position.
   final StickOffsetCalculator stickOffsetCalculator;
 
+  /// Callback, which is called when the stick starts dragging.
+  final Function? onStickDragStart;
+
+  /// Callback, which is called when the stick released.
+  final Function? onStickDragEnd;
+
   const JoystickArea({
     Key? key,
     this.child,
@@ -42,6 +48,8 @@ class JoystickArea extends StatefulWidget {
     this.stick = const JoystickStick(),
     this.mode = JoystickMode.all,
     this.stickOffsetCalculator = const CircleStickOffsetCalculator(),
+    this.onStickDragStart,
+    this.onStickDragEnd,
   }) : super(key: key);
 
   @override
@@ -84,6 +92,8 @@ class _JoystickAreaState extends State<JoystickArea> {
                 mode: widget.mode,
                 base: widget.base,
                 stick: widget.stick,
+                onStickDragStart: widget.onStickDragStart,
+                onStickDragEnd: widget.onStickDragEnd,
               ),
             ),
           ],

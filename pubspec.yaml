@@ -1,8 +1,8 @@
 name: flutter_joystick
-description: A virtual joystick for Flutter applications.
-version: 0.0.1
-homepage: https://github.com/pavzay/flutter_joystick
-repository: https://github.com/pavzay/flutter_joystick
+description: A virtual joystick for Flutter applications. Highly flexible and customizable.
+version: 0.0.2
+homepage: https://github.com/pavelzaichyk/flutter_joystick
+repository: https://github.com/pavelzaichyk/flutter_joystick
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

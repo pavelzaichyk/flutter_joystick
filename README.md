@@ -1,7 +1,7 @@
 # Flutter Joystick
 
 [![Pub](https://img.shields.io/pub/v/flutter_joystick.svg)](https://pub.dev/packages/flutter_joystick)
-[![License](https://img.shields.io/github/license/pavzay/flutter_joystick)](https://github.com/pavzay/flutter_joystick/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/pavelzaichyk/flutter_joystick)](https://github.com/pavelzaichyk/flutter_joystick/blob/master/LICENSE)
 [![Pub likes](https://badgen.net/pub/likes/flutter_joystick)](https://pub.dev/packages/flutter_joystick/score)
 [![Pub popularity](https://badgen.net/pub/popularity/flutter_joystick)](https://pub.dev/packages/flutter_joystick/score)
 [![Pub points](https://badgen.net/pub/points/flutter_joystick)](https://pub.dev/packages/flutter_joystick/score)
@@ -21,7 +21,7 @@ A virtual joystick for Flutter applications.
 
 ### Joystick
 
-![Joystick](https://raw.githubusercontent.com/pavzay/flutter_joystick/master/example/images/joystick.gif "Joystick")
+![Joystick](https://i.giphy.com/media/yd6bBNqinNcSRmOPAC/giphy.gif "Joystick")
 
 ```dart
 Joystick(listener: (details) {
@@ -46,13 +46,13 @@ vertical | allow move the stick only in vertical direction
 horizontal | allow move the stick only in horizontal direction
 horizontalAndVertical | allow move the stick only in horizontal and vertical directions, not diagonal
 
-![Joystick Vertical](https://raw.githubusercontent.com/pavzay/flutter_joystick/master/example/images/joystick_vertical.gif "Joystick Vertical")
-![Joystick Horizontal](https://raw.githubusercontent.com/pavzay/flutter_joystick/master/example/images/joystick_horizontal.gif "Joystick Horizontal")
-![Joystick Horizontal And Vertical](https://raw.githubusercontent.com/pavzay/flutter_joystick/master/example/images/joystick_horizontal_and_vertical.gif "Joystick Horizontal And Vertical")
+![Joystick Vertical](https://i.giphy.com/media/FXQG3ttV35Ca5L5ZA7/giphy.gif "Joystick Vertical")
+![Joystick Horizontal](https://i.giphy.com/media/SN9YMtBKaHLkw5iIvB/giphy.gif "Joystick Horizontal")
+![Joystick Horizontal And Vertical](https://i.giphy.com/media/znAdOQr52MmKTssc91/giphy.gif "Joystick Horizontal And Vertical")
 
 ### Joystick Area
 
-![Joystick](https://raw.githubusercontent.com/pavzay/flutter_joystick/master/example/images/joystick_area.gif "Joystick Area")
+![Joystick](https://i.giphy.com/media/2uFUWJcOaaTPFbIFBd/giphy.gif "Joystick Area")
 
 `JoystickArea` allows to render a joystick anywhere in this area where user clicks.
 
@@ -76,7 +76,7 @@ child | The `child` contained by the joystick area.
 
 ### Customization
 
-![Square Joystick](https://raw.githubusercontent.com/pavzay/flutter_joystick/master/example/images/square_joystick.gif "Square Joystick")
+![Square Joystick](https://i.giphy.com/media/kjGJmILAeBJFXGtcgt/giphy.gif "Square Joystick")
 
 `Joystick` and `JoystickArea` have additional arguments that allow to customize their appearance and behaviour.
 
