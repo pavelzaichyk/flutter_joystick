@@ -117,6 +117,8 @@ class _JoystickState extends State<Joystick> {
     });
 
     _callbackTimer?.cancel();
+    //send zero offset when the stick is released
+    widget.listener(StickDragDetails(_stickOffset.dx, _stickOffset.dy));
     _startDragStickPosition = Offset.zero;
     widget.onStickDragEnd?.call();
   }
