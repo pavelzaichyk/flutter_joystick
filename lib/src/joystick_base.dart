@@ -4,17 +4,19 @@ import 'joystick.dart';
 
 class JoystickBase extends StatelessWidget {
   final JoystickMode mode;
+  final double size;
 
   const JoystickBase({
     this.mode = JoystickMode.all,
+    this.size = 200,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 200,
-      height: 200,
+      width: size,
+      height: size,
       decoration: const BoxDecoration(
         color: Colors.transparent,
         shape: BoxShape.circle,

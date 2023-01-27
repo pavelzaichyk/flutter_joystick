@@ -36,6 +36,9 @@ class Joystick extends StatefulWidget {
   /// Callback, which is called when the stick released.
   final Function? onStickDragEnd;
 
+  /// Dimensions of the joystick. Defaults to 200
+  final double size;
+
   const Joystick({
     Key? key,
     required this.listener,
@@ -47,6 +50,7 @@ class Joystick extends StatefulWidget {
     this.controller,
     this.onStickDragStart,
     this.onStickDragEnd,
+    this.size = 200,
   }) : super(key: key);
 
   @override
@@ -77,7 +81,7 @@ class _JoystickState extends State<Joystick> {
       children: [
         Container(
           key: _baseKey,
-          child: widget.base ?? JoystickBase(mode: widget.mode),
+          child: widget.base ?? JoystickBase(mode: widget.mode, size: widget.size),
         ),
         GestureDetector(
           onPanStart: (details) => _stickDragStart(details.globalPosition),
