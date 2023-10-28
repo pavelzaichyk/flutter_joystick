@@ -74,7 +74,7 @@ class JoystickExample extends StatefulWidget {
   const JoystickExample({Key? key}) : super(key: key);
 
   @override
-  _JoystickExampleState createState() => _JoystickExampleState();
+  State<JoystickExample> createState() => _JoystickExampleState();
 }
 
 class _JoystickExampleState extends State<JoystickExample> {
@@ -135,7 +135,7 @@ class JoystickAreaExample extends StatefulWidget {
   const JoystickAreaExample({Key? key}) : super(key: key);
 
   @override
-  _JoystickAreaExampleState createState() => _JoystickAreaExampleState();
+  State<JoystickAreaExample> createState() => _JoystickAreaExampleState();
 }
 
 class _JoystickAreaExampleState extends State<JoystickAreaExample> {
@@ -194,7 +194,7 @@ class SquareJoystickExample extends StatefulWidget {
   const SquareJoystickExample({Key? key}) : super(key: key);
 
   @override
-  _SquareJoystickExampleState createState() => _SquareJoystickExampleState();
+  State<SquareJoystickExample> createState() => _SquareJoystickExampleState();
 }
 
 class _SquareJoystickExampleState extends State<SquareJoystickExample> {
@@ -275,14 +275,14 @@ class JoystickModeDropdown extends StatelessWidget {
             },
             items: const [
               DropdownMenuItem(
-                  child: Text('All Directions'), value: JoystickMode.all),
+                  value: JoystickMode.all, child: Text('All Directions')),
               DropdownMenuItem(
-                  child: Text('Vertical And Horizontal'),
-                  value: JoystickMode.horizontalAndVertical),
+                  value: JoystickMode.horizontalAndVertical,
+                  child: Text('Vertical And Horizontal')),
               DropdownMenuItem(
-                  child: Text('Horizontal'), value: JoystickMode.horizontal),
+                  value: JoystickMode.horizontal, child: Text('Horizontal')),
               DropdownMenuItem(
-                  child: Text('Vertical'), value: JoystickMode.vertical),
+                  value: JoystickMode.vertical, child: Text('Vertical')),
             ],
           ),
         ),

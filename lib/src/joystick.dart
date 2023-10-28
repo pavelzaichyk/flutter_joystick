@@ -50,7 +50,7 @@ class Joystick extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _JoystickState createState() => _JoystickState();
+  State<Joystick> createState() => _JoystickState();
 }
 
 class _JoystickState extends State<Joystick> {

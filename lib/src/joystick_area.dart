@@ -53,7 +53,7 @@ class JoystickArea extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _JoystickAreaState createState() => _JoystickAreaState();
+  State<JoystickArea> createState() => _JoystickAreaState();
 }
 
 class _JoystickAreaState extends State<JoystickArea> {

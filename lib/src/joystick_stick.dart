@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 
 class JoystickStick extends StatelessWidget {
-  const JoystickStick({Key? key}) : super(key: key);
+  final double size;
+
+  const JoystickStick({
+    this.size = 50,
+    Key? key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 50,
-      height: 50,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         boxShadow: [
