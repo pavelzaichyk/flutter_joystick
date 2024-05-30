@@ -25,9 +25,17 @@ class JoystickBase extends StatelessWidget {
     return Container(
       width: size,
       height: size,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.transparent,
         shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.24),
+            spreadRadius: 1,
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          )
+        ],
       ),
       child: CustomPaint(
         painter: _JoystickBasePainter(
@@ -85,19 +93,23 @@ class _JoystickBasePainter extends CustomPainter {
       canvas.drawCircle(center, diameter / 2, borderPaint);
     }
 
-    final centerPaint = Paint()
+    final outerPaint = Paint()
+      ..color = color.withOpacity(0.84)
+      ..style = PaintingStyle.fill;
+
+    final innerPaint = Paint()
       ..color = color
       ..style = PaintingStyle.fill;
 
     canvas.drawCircle(
       center,
       diameter / 2 - innerCircleRadiusReductionPercentage * diameter,
-      centerPaint,
+      outerPaint,
     );
     canvas.drawCircle(
       center,
       diameter / 2 - outermostCircleRadiusReductionPercentage * diameter,
-      centerPaint,
+      innerPaint,
     );
   }
 
