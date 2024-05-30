@@ -3,16 +3,20 @@ import 'package:flutter/material.dart';
 import 'joystick.dart';
 
 class JoystickBase extends StatelessWidget {
-  final JoystickMode mode;
-  final bool drawArrows;
-  final double size;
+  final Color? arrowsColor;
   final Color color;
+  final bool drawArrows;
+  final JoystickMode mode;
+  final double size;
+  final bool withBorderCircle;
 
   const JoystickBase({
-    this.mode = JoystickMode.all,
-    this.drawArrows = true,
-    this.size = 200,
+    this.arrowsColor,
     this.color = const Color(0x50616161),
+    this.drawArrows = true,
+    this.mode = JoystickMode.all,
+    this.size = 200,
+    this.withBorderCircle = true,
     Key? key,
   }) : super(key: key);
 
@@ -27,9 +31,11 @@ class JoystickBase extends StatelessWidget {
       ),
       child: CustomPaint(
         painter: _JoystickBasePainter(
-          mode: mode,
-          drawArrows: drawArrows,
+          arrowsColor: arrowsColor ?? color,
           color: color,
+          drawArrows: drawArrows,
+          mode: mode,
+          withBorderCircle: withBorderCircle,
         ),
       ),
     );
@@ -37,14 +43,18 @@ class JoystickBase extends StatelessWidget {
 }
 
 class _JoystickBasePainter extends CustomPainter {
-  final JoystickMode mode;
-  final bool drawArrows;
+  final Color arrowsColor;
   final Color color;
+  final bool drawArrows;
+  final JoystickMode mode;
+  final bool withBorderCircle;
 
   _JoystickBasePainter({
-    required this.mode,
-    required this.drawArrows,
+    required this.arrowsColor,
     required this.color,
+    required this.drawArrows,
+    required this.mode,
+    required this.withBorderCircle,
   });
 
   static const double borderStrokeWidthPercentage = 0.05;
@@ -61,35 +71,40 @@ class _JoystickBasePainter extends CustomPainter {
     final radius = diameter / 2;
     final center = Offset(radius, radius);
 
-    drawCircles(canvas, center, diameter);
+    drawCircles(canvas, center, diameter, withBorderCircle);
     drawVerticalAndHorizontalArrows(canvas, center, diameter);
   }
 
-  void drawCircles(Canvas canvas, Offset center, double diameter) {
-    final borderPaint = Paint()
-      ..color = color
-      ..strokeWidth = borderStrokeWidthPercentage * diameter
-      ..style = PaintingStyle.stroke;
+  void drawCircles(
+      Canvas canvas, Offset center, double diameter, bool withBorderCircle) {
+    if (withBorderCircle) {
+      final borderPaint = Paint()
+        ..color = color
+        ..strokeWidth = borderStrokeWidthPercentage * diameter
+        ..style = PaintingStyle.stroke;
+      canvas.drawCircle(center, diameter / 2, borderPaint);
+    }
 
     final centerPaint = Paint()
       ..color = color
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(center, diameter / 2, borderPaint);
     canvas.drawCircle(
-        center,
-        diameter / 2 - innerCircleRadiusReductionPercentage * diameter,
-        centerPaint);
+      center,
+      diameter / 2 - innerCircleRadiusReductionPercentage * diameter,
+      centerPaint,
+    );
     canvas.drawCircle(
-        center,
-        diameter / 2 - outermostCircleRadiusReductionPercentage * diameter,
-        centerPaint);
+      center,
+      diameter / 2 - outermostCircleRadiusReductionPercentage * diameter,
+      centerPaint,
+    );
   }
 
   void drawVerticalAndHorizontalArrows(
       Canvas canvas, Offset center, double diameter) {
     final linePaint = Paint()
-      ..color = color
+      ..color = arrowsColor
       ..strokeWidth = arrowStrokeWidthPercentage * diameter
       ..style = PaintingStyle.stroke;
     drawVerticalArrows(canvas, center, diameter, linePaint);
