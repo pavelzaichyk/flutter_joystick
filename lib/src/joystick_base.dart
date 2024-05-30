@@ -30,9 +30,9 @@ class JoystickBase extends StatelessWidget {
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.24),
+            color: color.withOpacity(0.16),
             spreadRadius: 1,
-            blurRadius: 16,
+            blurRadius: 12,
             offset: const Offset(0, 4),
           )
         ],
