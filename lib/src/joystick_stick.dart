@@ -31,8 +31,8 @@ class JoystickStick extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            darken(color, 0.9),
-            lighten(color, 0.3),
+            darken(color),
+            lighten(color),
           ],
         ),
       ),
