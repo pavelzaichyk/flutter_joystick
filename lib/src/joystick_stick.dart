@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class JoystickStick extends StatelessWidget {
-  final MaterialColor color;
-  final Color shadowColor;
+  final Color color;
+  final Color? shadowColor;
   final double size;
 
   const JoystickStick({
     this.color = Colors.lightBlue,
-    this.shadowColor = Colors.blue,
+    this.shadowColor,
     this.size = 50,
     Key? key,
   }) : super(key: key);
@@ -21,7 +21,7 @@ class JoystickStick extends StatelessWidget {
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: shadowColor.withOpacity(0.5),
+            color: shadowColor ?? color.withOpacity(0.5),
             spreadRadius: 5,
             blurRadius: 7,
             offset: const Offset(0, 3),
@@ -31,11 +31,30 @@ class JoystickStick extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            color.shade900,
-            color.shade400,
+            darken(color, 0.9),
+            lighten(color, 0.3),
           ],
         ),
       ),
     );
+  }
+
+  Color darken(Color color, [double amount = .1]) {
+    assert(amount >= 0 && amount <= 1);
+
+    final hsl = HSLColor.fromColor(color);
+    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
+
+    return hslDark.toColor();
+  }
+
+  Color lighten(Color color, [double amount = .1]) {
+    assert(amount >= 0 && amount <= 1);
+
+    final hsl = HSLColor.fromColor(color);
+    final hslLight =
+        hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
+
+    return hslLight.toColor();
   }
 }
