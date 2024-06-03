@@ -68,6 +68,7 @@ class _JoystickState extends State<Joystick> {
     widget.controller?.onStickDragUpdate =
         (globalPosition) => _stickDragUpdate(globalPosition);
     widget.controller?.onStickDragEnd = () => _stickDragEnd();
+    Future.delayed(const Duration(milliseconds: 300), () => _animateJoystick());
   }
 
   @override
@@ -87,6 +88,47 @@ class _JoystickState extends State<Joystick> {
         ),
       ],
     );
+  }
+
+  void _animateJoystick() async {
+    Duration duration = const Duration(milliseconds: 120);
+    if (widget.mode == JoystickMode.vertical) {
+      await _moveInYAxis(duration);
+    } else if (widget.mode == JoystickMode.horizontal) {
+      await _moveInXAxis(duration);
+    } else {
+      duration = const Duration(milliseconds: 60);
+      await _moveInXAxis(duration);
+      await _moveInYAxis(duration);
+    }
+  }
+
+  _moveInXAxis(Duration duration) async {
+    Offset startRight = const Offset(-90, 0);
+    Offset moveRight = const Offset(-40, 0);
+    Offset center = const Offset(0, 0);
+    Offset moveLeft = const Offset(40, 0);
+    Offset endLeft = const Offset(90, 0);
+    _stickDragUpdate(startRight);
+    await Future.delayed(duration, () => _stickDragUpdate(moveRight));
+    await Future.delayed(duration, () => _stickDragUpdate(center));
+    await Future.delayed(duration, () => _stickDragUpdate(moveLeft));
+    await Future.delayed(duration, () => _stickDragUpdate(endLeft));
+    await Future.delayed(duration, () => _stickDragUpdate(center));
+  }
+
+  _moveInYAxis(Duration duration) async {
+    Offset startTop = const Offset(0, -90);
+    Offset moveTop = const Offset(0, -40);
+    Offset center = const Offset(0, 0);
+    Offset moveBottom = const Offset(0, 40);
+    Offset endBottom = const Offset(0, 90);
+    await Future.delayed(duration, () => _stickDragUpdate(startTop));
+    await Future.delayed(duration, () => _stickDragUpdate(moveTop));
+    await Future.delayed(duration, () => _stickDragUpdate(center));
+    await Future.delayed(duration, () => _stickDragUpdate(moveBottom));
+    await Future.delayed(duration, () => _stickDragUpdate(endBottom));
+    await Future.delayed(duration, () => _stickDragUpdate(center));
   }
 
   void _stickDragStart(Offset globalPosition) {
