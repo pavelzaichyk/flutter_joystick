@@ -81,11 +81,41 @@ class _JoystickExampleState extends State<JoystickExample> {
   double _x = 100;
   double _y = 100;
   JoystickMode _joystickMode = JoystickMode.all;
+  bool includeInitialAnimation = true;
+  bool drawArrows = true;
+  bool isBlueJoystick = false;
+  bool withBorderCircle = false;
+  Key key = UniqueKey();
 
   @override
   void didChangeDependencies() {
     _x = MediaQuery.of(context).size.width / 2 - ballSize / 2;
     super.didChangeDependencies();
+  }
+
+  void _updateInitialAnimation() {
+    setState(() {
+      includeInitialAnimation = !includeInitialAnimation;
+      key = UniqueKey();
+    });
+  }
+
+  void _updateDrawArrows() {
+    setState(() {
+      drawArrows = !drawArrows;
+    });
+  }
+
+  void _updateBorderCircle() {
+    setState(() {
+      withBorderCircle = !withBorderCircle;
+    });
+  }
+
+  void _updateBlueJoystick() {
+    setState(() {
+      isBlueJoystick = !isBlueJoystick;
+    });
   }
 
   @override
@@ -109,22 +139,85 @@ class _JoystickExampleState extends State<JoystickExample> {
         child: Stack(
           children: [
             Container(
-              color: Colors.green,
+              color: Colors.grey.shade100,
             ),
             Ball(_x, _y),
             Align(
-              alignment: const Alignment(0, 0.8),
-              child: Joystick(
-                mode: _joystickMode,
-                listener: (details) {
-                  setState(() {
-                    _x = _x + step * details.x;
-                    _y = _y + step * details.y;
-                  });
-                },
+              alignment: const Alignment(0, 0.9),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 300.0,
+                color: Colors.blueGrey.shade700,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Joystick(
+                      includeInitialAnimation: includeInitialAnimation,
+                      key: key,
+                      base: JoystickBase(
+                        arrowsColor: isBlueJoystick
+                            ? Colors.grey.shade200
+                            : Colors.grey.shade400,
+                        color: isBlueJoystick
+                            ? Colors.lightBlue.shade600
+                            : Colors.black,
+                        drawArrows: drawArrows,
+                        mode: _joystickMode,
+                        withBorderCircle: withBorderCircle,
+                      ),
+                      stick: JoystickStick(
+                        color: isBlueJoystick
+                            ? Colors.blue.shade600
+                            : Colors.blue.shade700,
+                      ),
+                      mode: _joystickMode,
+                      listener: (details) {
+                        setState(() {
+                          _x = _x + step * details.x;
+                          _y = _y + step * details.y;
+                        });
+                      },
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        buildButton(
+                          value: 'Initial Animation: $includeInitialAnimation',
+                          clickHandler: _updateInitialAnimation,
+                        ),
+                        buildButton(
+                          value: 'Draw Arrows: $drawArrows',
+                          clickHandler: _updateDrawArrows,
+                        ),
+                        buildButton(
+                          value: 'Draw Border Circle: $withBorderCircle',
+                          clickHandler: _updateBorderCircle,
+                        ),
+                        buildButton(
+                          value:
+                              'Joystick Color: ${isBlueJoystick ? 'Blue' : 'Black'}',
+                          clickHandler: _updateBlueJoystick,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildButton({required String value, required clickHandler}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: ElevatedButton(
+        onPressed: clickHandler,
+        child: Text(
+          value,
         ),
       ),
     );
@@ -236,7 +329,9 @@ class _SquareJoystickExampleState extends State<SquareJoystickExample> {
               alignment: const Alignment(0, 0.8),
               child: Joystick(
                 mode: _joystickMode,
-                base: JoystickSquareBase(mode: _joystickMode),
+                base: JoystickSquareBase(
+                  mode: _joystickMode,
+                ),
                 stickOffsetCalculator: const RectangleStickOffsetCalculator(),
                 listener: (details) {
                   setState(() {
