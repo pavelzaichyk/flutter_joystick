@@ -36,6 +36,8 @@ class Joystick extends StatefulWidget {
   /// Callback, which is called when the stick released.
   final Function? onStickDragEnd;
 
+  final bool includeInitialAnimation;
+
   const Joystick({
     Key? key,
     required this.listener,
@@ -47,6 +49,7 @@ class Joystick extends StatefulWidget {
     this.controller,
     this.onStickDragStart,
     this.onStickDragEnd,
+    this.includeInitialAnimation = true,
   }) : super(key: key);
 
   @override
@@ -69,10 +72,12 @@ class _JoystickState extends State<Joystick> {
     widget.controller?.onStickDragUpdate =
         (globalPosition) => _stickDragUpdate(globalPosition);
     widget.controller?.onStickDragEnd = () => _stickDragEnd();
-    Future.delayed(
-      const Duration(milliseconds: 300),
-      () => _animateJoystick(),
-    );
+    if (widget.includeInitialAnimation) {
+      Future.delayed(
+        const Duration(milliseconds: 300),
+        () => _animateJoystick(),
+      );
+    }
   }
 
   @override
