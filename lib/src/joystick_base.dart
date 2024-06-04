@@ -4,6 +4,7 @@ import 'joystick.dart';
 
 class JoystickBase extends StatelessWidget {
   final Color? arrowsColor;
+  final List<BoxShadow>? boxShadows;
   final Color color;
   final bool drawArrows;
   final JoystickMode mode;
@@ -12,6 +13,7 @@ class JoystickBase extends StatelessWidget {
 
   const JoystickBase({
     this.arrowsColor,
+    this.boxShadows,
     this.color = const Color(0x50616161),
     this.drawArrows = true,
     this.mode = JoystickMode.all,
@@ -22,20 +24,25 @@ class JoystickBase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color boxShadowColor =
+        MediaQuery.of(context).platformBrightness == Brightness.dark
+            ? color.withOpacity(0.08)
+            : color.withOpacity(0.16);
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
         color: Colors.transparent,
         shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: color.withOpacity(0.16),
-            spreadRadius: 1,
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          )
-        ],
+        boxShadow: boxShadows ??
+            [
+              BoxShadow(
+                color: boxShadowColor,
+                spreadRadius: 1,
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
       ),
       child: Stack(
         children: [
