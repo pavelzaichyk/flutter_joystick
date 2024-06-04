@@ -39,7 +39,7 @@ class JoystickArea extends StatefulWidget {
   final Function? onStickDragEnd;
 
   const JoystickArea({
-    Key? key,
+    super.key,
     this.child,
     this.initialJoystickAlignment = Alignment.bottomCenter,
     required this.listener,
@@ -50,7 +50,7 @@ class JoystickArea extends StatefulWidget {
     this.stickOffsetCalculator = const CircleStickOffsetCalculator(),
     this.onStickDragStart,
     this.onStickDragEnd,
-  }) : super(key: key);
+  });
 
   @override
   State<JoystickArea> createState() => _JoystickAreaState();

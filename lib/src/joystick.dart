@@ -37,7 +37,7 @@ class Joystick extends StatefulWidget {
   final Function? onStickDragEnd;
 
   const Joystick({
-    Key? key,
+    super.key,
     required this.listener,
     this.period = const Duration(milliseconds: 100),
     this.base,
@@ -47,7 +47,7 @@ class Joystick extends StatefulWidget {
     this.controller,
     this.onStickDragStart,
     this.onStickDragEnd,
-  }) : super(key: key);
+  });
 
   @override
   State<Joystick> createState() => _JoystickState();
