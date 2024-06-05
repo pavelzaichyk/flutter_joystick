@@ -10,6 +10,7 @@ class JoystickBase extends StatelessWidget {
   final JoystickMode mode;
   final double size;
   final bool withBorderCircle;
+  final bool enableArrowAnimation;
 
   const JoystickBase({
     this.arrowsColor,
@@ -19,6 +20,7 @@ class JoystickBase extends StatelessWidget {
     this.mode = JoystickMode.all,
     this.size = 200,
     this.withBorderCircle = true,
+    this.enableArrowAnimation = true,
     Key? key,
   }) : super(key: key);
 
@@ -62,6 +64,7 @@ class JoystickBase extends StatelessWidget {
               arrowsColor: arrowsColor ?? color,
               mode: mode,
               size: size,
+              enableAnimation: enableArrowAnimation,
             ),
         ],
       ),

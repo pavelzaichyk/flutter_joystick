@@ -7,12 +7,14 @@ class JoystickArrows extends StatefulWidget {
   final Color arrowsColor;
   final JoystickMode mode;
   final double size;
+  final bool enableAnimation;
 
   const JoystickArrows({
     super.key,
     required this.arrowsColor,
     required this.mode,
     required this.size,
+    required this.enableAnimation,
   });
 
   @override
@@ -65,6 +67,7 @@ class _JoystickArrowsState extends State<JoystickArrows>
           value: (controller.value * 100).toInt(),
           color: widget.arrowsColor,
           mode: widget.mode,
+          enableAnimation: widget.enableAnimation,
         ),
       ),
     );
@@ -75,11 +78,13 @@ class _ArrowPainter extends CustomPainter {
   final int value;
   final Color color;
   final JoystickMode mode;
+  final bool enableAnimation;
 
   _ArrowPainter({
     required this.value,
     required this.color,
     required this.mode,
+    required this.enableAnimation,
   });
 
   @override
@@ -196,9 +201,9 @@ class _ArrowPainter extends CustomPainter {
   }
 
   evaluateColor(bool condition) {
-    Color resultColor = ColorUtils.darken(color, 0.14);
-    if (condition) {
-      resultColor = color;
+    Color resultColor = color;
+    if (!condition && enableAnimation) {
+      resultColor = ColorUtils.darken(color, 0.14);
     }
     return resultColor;
   }
