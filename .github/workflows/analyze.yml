@@ -1,0 +1,42 @@
+name: "analyze"
+on: # rebuild any PRs and main branch changes
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  dart: # make sure the action works on a clean machine without building
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+      - uses: invertase/github-action-dart-analyzer@v3
+        with:
+          # (Optional) Treat info level issues as fatal.
+          fatal-infos: false
+
+          # (Optional) Treat warning level issues as fatal
+          # (defaults to true).
+          fatal-warnings: false
+
+          # (Optional) Whether to add annotations to GitHub actions summary / PR
+          # review files.
+          # (defaults to true).
+          annotate: true
+
+          # (Optional) If set to true only annotations will be created and the
+          # GitHub action itself will not fail on Dart analyzer problems.
+          # (defaults to false).
+          annotate-only: false
+
+          # (Optional) If set to true the GitHub action will run custom_lint
+          # if it is found as dependency in the pubspec.yaml
+          # (defaults to false).
+          custom-lint: false
+
+          # (Optional) The working directory to run the Dart analyzer in
+          # (defaults to `./`).
+          working-directory: ./
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed .

@@ -9,7 +9,7 @@ const ballSize = 20.0;
 const step = 10.0;
 
 class JoystickExampleApp extends StatelessWidget {
-  const JoystickExampleApp({Key? key}) : super(key: key);
+  const JoystickExampleApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class JoystickExampleApp extends StatelessWidget {
 }
 
 class MainPage extends StatelessWidget {
-  const MainPage({Key? key}) : super(key: key);
+  const MainPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class MainPage extends StatelessWidget {
 }
 
 class JoystickExample extends StatefulWidget {
-  const JoystickExample({Key? key}) : super(key: key);
+  const JoystickExample({super.key});
 
   @override
   State<JoystickExample> createState() => _JoystickExampleState();
@@ -225,7 +225,7 @@ class _JoystickExampleState extends State<JoystickExample> {
 }
 
 class JoystickAreaExample extends StatefulWidget {
-  const JoystickAreaExample({Key? key}) : super(key: key);
+  const JoystickAreaExample({super.key});
 
   @override
   State<JoystickAreaExample> createState() => _JoystickAreaExampleState();
@@ -284,7 +284,7 @@ class _JoystickAreaExampleState extends State<JoystickAreaExample> {
 }
 
 class SquareJoystickExample extends StatefulWidget {
-  const SquareJoystickExample({Key? key}) : super(key: key);
+  const SquareJoystickExample({super.key});
 
   @override
   State<SquareJoystickExample> createState() => _SquareJoystickExampleState();
@@ -353,8 +353,7 @@ class JoystickModeDropdown extends StatelessWidget {
   final ValueChanged<JoystickMode> onChanged;
 
   const JoystickModeDropdown(
-      {Key? key, required this.mode, required this.onChanged})
-      : super(key: key);
+      {super.key, required this.mode, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -390,7 +389,7 @@ class Ball extends StatelessWidget {
   final double x;
   final double y;
 
-  const Ball(this.x, this.y, {Key? key}) : super(key: key);
+  const Ball(this.x, this.y, {super.key});
 
   @override
   Widget build(BuildContext context) {

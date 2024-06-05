@@ -138,8 +138,8 @@ class JoystickSquareBase extends StatelessWidget {
     this.size = 200,
     this.drawArrows = true,
     this.color = const Color(0x50616161),
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

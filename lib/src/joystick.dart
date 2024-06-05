@@ -39,7 +39,7 @@ class Joystick extends StatefulWidget {
   final bool includeInitialAnimation;
 
   const Joystick({
-    Key? key,
+    super.key,
     required this.listener,
     this.period = const Duration(milliseconds: 100),
     this.base,

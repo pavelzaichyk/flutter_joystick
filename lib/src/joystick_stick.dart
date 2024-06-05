@@ -10,8 +10,8 @@ class JoystickStick extends StatelessWidget {
     this.color = Colors.lightBlue,
     this.shadowColor,
     this.size = 50,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
