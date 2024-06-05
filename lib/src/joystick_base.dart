@@ -21,8 +21,8 @@ class JoystickBase extends StatelessWidget {
     this.size = 200,
     this.withBorderCircle = true,
     this.enableArrowAnimation = true,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
