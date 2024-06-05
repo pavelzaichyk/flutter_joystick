@@ -81,8 +81,9 @@ class _JoystickExampleState extends State<JoystickExample> {
   double _x = 100;
   double _y = 100;
   JoystickMode _joystickMode = JoystickMode.all;
-  bool includeInitialAnimation = true;
   bool drawArrows = true;
+  bool includeInitialAnimation = true;
+  bool enableArrowAnimation = false;
   bool isBlueJoystick = false;
   bool withBorderCircle = false;
   Key key = UniqueKey();
@@ -93,6 +94,12 @@ class _JoystickExampleState extends State<JoystickExample> {
     super.didChangeDependencies();
   }
 
+  void _updateDrawArrows() {
+    setState(() {
+      drawArrows = !drawArrows;
+    });
+  }
+
   void _updateInitialAnimation() {
     setState(() {
       includeInitialAnimation = !includeInitialAnimation;
@@ -100,21 +107,21 @@ class _JoystickExampleState extends State<JoystickExample> {
     });
   }
 
-  void _updateDrawArrows() {
+  void _updateBlueJoystick() {
     setState(() {
-      drawArrows = !drawArrows;
+      isBlueJoystick = !isBlueJoystick;
+    });
+  }
+
+  void _updateArrowAnimation() {
+    setState(() {
+      enableArrowAnimation = !enableArrowAnimation;
     });
   }
 
   void _updateBorderCircle() {
     setState(() {
       withBorderCircle = !withBorderCircle;
-    });
-  }
-
-  void _updateBlueJoystick() {
-    setState(() {
-      isBlueJoystick = !isBlueJoystick;
     });
   }
 
@@ -163,6 +170,7 @@ class _JoystickExampleState extends State<JoystickExample> {
                             ? Colors.lightBlue.shade600
                             : Colors.black,
                         drawArrows: drawArrows,
+                        enableArrowAnimation: enableArrowAnimation,
                         mode: _joystickMode,
                         withBorderCircle: withBorderCircle,
                       ),
@@ -198,6 +206,10 @@ class _JoystickExampleState extends State<JoystickExample> {
                           value:
                               'Joystick Color: ${isBlueJoystick ? 'Blue' : 'Black'}',
                           clickHandler: _updateBlueJoystick,
+                        ),
+                        buildButton(
+                          value: 'Animated Arrows? : $enableArrowAnimation',
+                          clickHandler: _updateArrowAnimation,
                         ),
                       ],
                     )
