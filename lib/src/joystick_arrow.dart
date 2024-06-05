@@ -89,11 +89,6 @@ class _ArrowPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3;
 
-    // canvas.drawColor(
-    //   Colors.red,
-    //   BlendMode.src,
-    // );
-
     drawVerticalArrows(canvas, paint, size);
     drawHorizontalArrows(canvas, paint, size);
   }
