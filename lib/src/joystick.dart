@@ -36,6 +36,7 @@ class Joystick extends StatefulWidget {
   /// Callback, which is called when the stick released.
   final Function? onStickDragEnd;
 
+  /// Decides if the stick's initial movement animation should be included. By default [true].
   final bool includeInitialAnimation;
 
   const Joystick({
@@ -50,7 +51,7 @@ class Joystick extends StatefulWidget {
     this.onStickDragStart,
     this.onStickDragEnd,
     this.includeInitialAnimation = true,
-  }) : super(key: key);
+  });
 
   @override
   State<Joystick> createState() => _JoystickState();
