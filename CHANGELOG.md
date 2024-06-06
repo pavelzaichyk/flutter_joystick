@@ -1,4 +1,4 @@
-## 0.0.5
+## 0.1.0
 
 - Added animation logic to the `Joystick` to animate the `JoystickStick` on load which can be toggled using `includeInitialAnimation` parameter.
 - Added: Support for customizing `arrowsColor`, `boxShadows` and `withBorderCircle` parameter in `JoystickBase`.
