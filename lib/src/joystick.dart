@@ -36,6 +36,9 @@ class Joystick extends StatefulWidget {
   /// Callback, which is called when the stick released.
   final Function? onStickDragEnd;
 
+  /// Decides if the stick's initial movement animation should be included. By default [true].
+  final bool includeInitialAnimation;
+
   const Joystick({
     super.key,
     required this.listener,
@@ -47,6 +50,7 @@ class Joystick extends StatefulWidget {
     this.controller,
     this.onStickDragStart,
     this.onStickDragEnd,
+    this.includeInitialAnimation = true,
   });
 
   @override
@@ -58,6 +62,7 @@ class _JoystickState extends State<Joystick> {
 
   Offset _stickOffset = Offset.zero;
   Timer? _callbackTimer;
+  final double _moveValue = 24.0;
   Offset _startDragStickPosition = Offset.zero;
 
   @override
@@ -68,6 +73,12 @@ class _JoystickState extends State<Joystick> {
     widget.controller?.onStickDragUpdate =
         (globalPosition) => _stickDragUpdate(globalPosition);
     widget.controller?.onStickDragEnd = () => _stickDragEnd();
+    if (widget.includeInitialAnimation) {
+      Future.delayed(
+        const Duration(milliseconds: 300),
+        () => _animateJoystick(),
+      );
+    }
   }
 
   @override
@@ -86,6 +97,57 @@ class _JoystickState extends State<Joystick> {
           child: widget.stick,
         ),
       ],
+    );
+  }
+
+  void _animateJoystick() async {
+    Duration duration = const Duration(milliseconds: 200);
+    if (widget.mode == JoystickMode.vertical) {
+      await _moveInYAxis(duration);
+    } else if (widget.mode == JoystickMode.horizontal) {
+      await _moveInXAxis(duration);
+    } else {
+      duration = const Duration(milliseconds: 160);
+      await _moveInXAxis(duration);
+      await _moveInYAxis(duration);
+    }
+  }
+
+  _moveInXAxis(Duration duration) async {
+    Offset moveLeft = Offset(-_moveValue, 0);
+    Offset moveRight = Offset(_moveValue, 0);
+    Offset center = _startDragStickPosition;
+
+    await Future.delayed(
+      duration,
+      () => _stickDragUpdate(moveLeft),
+    );
+    await Future.delayed(
+      duration,
+      () => _stickDragUpdate(moveRight),
+    );
+    await Future.delayed(
+      duration,
+      () => _stickDragUpdate(center),
+    );
+  }
+
+  _moveInYAxis(Duration duration) async {
+    Offset moveTop = Offset(0, -_moveValue);
+    Offset moveBottom = Offset(0, _moveValue);
+    Offset center = _startDragStickPosition;
+
+    await Future.delayed(
+      duration,
+      () => _stickDragUpdate(moveTop),
+    );
+    await Future.delayed(
+      duration,
+      () => _stickDragUpdate(moveBottom),
+    );
+    await Future.delayed(
+      duration,
+      () => _stickDragUpdate(center),
     );
   }
 

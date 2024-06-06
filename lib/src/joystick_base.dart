@@ -1,59 +1,91 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_joystick/src/joystick_arrow.dart';
 import 'joystick.dart';
 
 class JoystickBase extends StatelessWidget {
-  final JoystickMode mode;
-  final bool drawArrows;
-  final double size;
+  final Color? arrowsColor;
+  final List<BoxShadow>? boxShadows;
   final Color color;
+  final bool drawArrows;
+  final JoystickMode mode;
+  final double size;
+  final bool withBorderCircle;
+  final bool enableArrowAnimation;
 
   const JoystickBase({
-    this.mode = JoystickMode.all,
-    this.drawArrows = true,
-    this.size = 200,
+    this.arrowsColor,
+    this.boxShadows,
     this.color = const Color(0x50616161),
+    this.drawArrows = true,
+    this.mode = JoystickMode.all,
+    this.size = 200,
+    this.withBorderCircle = true,
+    this.enableArrowAnimation = true,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    Color boxShadowColor =
+        MediaQuery.of(context).platformBrightness == Brightness.dark
+            ? color.withOpacity(0.08)
+            : color.withOpacity(0.16);
     return Container(
       width: size,
       height: size,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.transparent,
         shape: BoxShape.circle,
+        boxShadow: boxShadows ??
+            [
+              BoxShadow(
+                color: boxShadowColor,
+                spreadRadius: 1,
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
       ),
-      child: CustomPaint(
-        painter: _JoystickBasePainter(
-          mode: mode,
-          drawArrows: drawArrows,
-          color: color,
-        ),
+      child: Stack(
+        children: [
+          SizedBox(
+            width: size,
+            height: size,
+            child: CustomPaint(
+              painter: _JoystickBasePainter(
+                color: color,
+                mode: mode,
+                withBorderCircle: withBorderCircle,
+              ),
+            ),
+          ),
+          if (drawArrows)
+            JoystickArrows(
+              arrowsColor: arrowsColor ?? color,
+              mode: mode,
+              size: size,
+              enableAnimation: enableArrowAnimation,
+            ),
+        ],
       ),
     );
   }
 }
 
 class _JoystickBasePainter extends CustomPainter {
-  final JoystickMode mode;
-  final bool drawArrows;
   final Color color;
+  final JoystickMode mode;
+  final bool withBorderCircle;
 
   _JoystickBasePainter({
-    required this.mode,
-    required this.drawArrows,
     required this.color,
+    required this.mode,
+    required this.withBorderCircle,
   });
 
   static const double borderStrokeWidthPercentage = 0.05;
-  static const double arrowStrokeWidthPercentage = 0.025;
   static const double innerCircleRadiusReductionPercentage = 0.06;
   static const double outermostCircleRadiusReductionPercentage = 0.3;
-  static const double arrowWidth = 0.15;
-  static const double arrowHeight = 0.1;
-  static const double arrowHeadOffset = 0.35;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -61,85 +93,37 @@ class _JoystickBasePainter extends CustomPainter {
     final radius = diameter / 2;
     final center = Offset(radius, radius);
 
-    drawCircles(canvas, center, diameter);
-    drawVerticalAndHorizontalArrows(canvas, center, diameter);
+    drawCircles(canvas, center, diameter, withBorderCircle);
   }
 
-  void drawCircles(Canvas canvas, Offset center, double diameter) {
-    final borderPaint = Paint()
-      ..color = color
-      ..strokeWidth = borderStrokeWidthPercentage * diameter
-      ..style = PaintingStyle.stroke;
+  void drawCircles(
+      Canvas canvas, Offset center, double diameter, bool withBorderCircle) {
+    if (withBorderCircle) {
+      final borderPaint = Paint()
+        ..color = color
+        ..strokeWidth = borderStrokeWidthPercentage * diameter
+        ..style = PaintingStyle.stroke;
+      canvas.drawCircle(center, diameter / 2, borderPaint);
+    }
 
-    final centerPaint = Paint()
+    final outerPaint = Paint()
+      ..color = color.withOpacity(0.84)
+      ..style = PaintingStyle.fill;
+
+    final innerPaint = Paint()
       ..color = color
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(center, diameter / 2, borderPaint);
     canvas.drawCircle(
-        center,
-        diameter / 2 - innerCircleRadiusReductionPercentage * diameter,
-        centerPaint);
+      center,
+      diameter / 2 - innerCircleRadiusReductionPercentage * diameter,
+      outerPaint,
+    );
     canvas.drawCircle(
-        center,
-        diameter / 2 - outermostCircleRadiusReductionPercentage * diameter,
-        centerPaint);
-  }
-
-  void drawVerticalAndHorizontalArrows(
-      Canvas canvas, Offset center, double diameter) {
-    final linePaint = Paint()
-      ..color = color
-      ..strokeWidth = arrowStrokeWidthPercentage * diameter
-      ..style = PaintingStyle.stroke;
-    drawVerticalArrows(canvas, center, diameter, linePaint);
-    drawHorizontalArrows(canvas, center, diameter, linePaint);
-  }
-
-  void drawVerticalArrows(
-      Canvas canvas, Offset center, double diameter, Paint linePaint) {
-    if (drawArrows && mode != JoystickMode.horizontal) {
-      final height = arrowHeight * diameter;
-      final headOffset = arrowHeadOffset * diameter;
-      final width = arrowWidth * diameter;
-
-      final topArrowHeadOffset = center.dy - headOffset;
-      var topArrowHead = Offset(center.dx, topArrowHeadOffset);
-      canvas.drawLine(
-          topArrowHead, topArrowHead.translate(-width, height), linePaint);
-      canvas.drawLine(
-          topArrowHead, topArrowHead.translate(width, height), linePaint);
-
-      final bottomArrowHeadOffset = center.dy + headOffset;
-      var bottomArrowHead = Offset(center.dx, bottomArrowHeadOffset);
-      canvas.drawLine(bottomArrowHead,
-          bottomArrowHead.translate(-width, -height), linePaint);
-      canvas.drawLine(bottomArrowHead,
-          bottomArrowHead.translate(width, -height), linePaint);
-    }
-  }
-
-  void drawHorizontalArrows(
-      Canvas canvas, Offset center, double diameter, Paint linePaint) {
-    if (drawArrows && mode != JoystickMode.vertical) {
-      final height = arrowHeight * diameter;
-      final headOffset = arrowHeadOffset * diameter;
-      final width = arrowWidth * diameter;
-
-      final leftArrowHeadOffset = center.dx - headOffset;
-      final leftArrowHead = Offset(leftArrowHeadOffset, center.dy);
-      canvas.drawLine(
-          leftArrowHead, leftArrowHead.translate(height, -width), linePaint);
-      canvas.drawLine(
-          leftArrowHead, leftArrowHead.translate(height, width), linePaint);
-
-      final rightArrowHeadOffset = center.dx + headOffset;
-      var rightArrowHead = Offset(rightArrowHeadOffset, center.dy);
-      canvas.drawLine(
-          rightArrowHead, rightArrowHead.translate(-height, -width), linePaint);
-      canvas.drawLine(
-          rightArrowHead, rightArrowHead.translate(-height, width), linePaint);
-    }
+      center,
+      diameter / 2 - outermostCircleRadiusReductionPercentage * diameter,
+      innerPaint,
+    );
   }
 
   @override
