@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ColorUtils {
+  static const Color defaultBaseColor = Colors.grey;
+  static const Color defaultArrowsColor = Colors.white;
+  static const Color defaultStickColor = Colors.blue;
+
   static Color darken(Color color, [double amount = .1]) {
     assert(amount >= 0 && amount <= 1);
 

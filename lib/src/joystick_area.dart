@@ -38,6 +38,9 @@ class JoystickArea extends StatefulWidget {
   /// Callback, which is called when the stick released.
   final Function? onStickDragEnd;
 
+  /// Decides if the stick's initial movement animation should be included. By default [true].
+  final bool includeInitialAnimation;
+
   const JoystickArea({
     super.key,
     this.child,
@@ -50,6 +53,7 @@ class JoystickArea extends StatefulWidget {
     this.stickOffsetCalculator = const CircleStickOffsetCalculator(),
     this.onStickDragStart,
     this.onStickDragEnd,
+    this.includeInitialAnimation = true,
   });
 
   @override
@@ -94,6 +98,7 @@ class _JoystickAreaState extends State<JoystickArea> {
                 stick: widget.stick,
                 onStickDragStart: widget.onStickDragStart,
                 onStickDragEnd: widget.onStickDragEnd,
+                includeInitialAnimation: widget.includeInitialAnimation,
               ),
             ),
           ],

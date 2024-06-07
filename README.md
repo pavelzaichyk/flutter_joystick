@@ -13,16 +13,18 @@
 Flutter Joystick is a virtual joystick package for Flutter applications that provides interactive
 joystick components for user interface design.
 
+[See Examples](https://joystick.rebeloid.com)
+
 ## Table of Contents
 
-1. [Joystick](#joystick)
-2. [Joystick Area](#joystick-area)
-3. [Customization](#customization)
-4. [Donate](#donate)
+- [Joystick](#joystick)
+- [Joystick Area](#joystick-area)
+- [Customization](#customization)
+- [Donate](#donate)
 
 ### Joystick
 
-![Joystick](https://i.giphy.com/media/yd6bBNqinNcSRmOPAC/giphy.gif "Joystick")
+![Joystick](https://i.giphy.com/media/Duip3rpjG1ie6aoCpO/giphy.gif "Joystick")
 
 The `Joystick` widget is a virtual joystick that allows users to drag a stick within a defined area.
 You can customize its behavior and appearance. Here's how you can use it:
@@ -35,11 +37,12 @@ Joystick(listener: (details) {
 
 **`Joystick` Arguments:**
 
-| Parameter  | Description                                                                                                                                                                                                                           |
-|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `listener` | A callback function that is invoked at a specified frequency (`period`) when the joystick stick is dragged. The `listener` parameter, `details`, provides the stick's offset from the center of the base (ranging from -1.0 to +1.0). |
-| `period`   | (Optional) The frequency at which the `listener` callback is triggered from the moment the stick is dragged. The default is 100 milliseconds.                                                                                         |
-| `mode`     | (Optional) The possible direction mode of the joystick stick. The default mode is `all`, allowing movement in any direction: vertical, horizontal, and diagonal.                                                                      |
+| Parameter                 | Description                                                                                                                                                                                                                           |
+|---------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `listener`                | A callback function that is invoked at a specified frequency (`period`) when the joystick stick is dragged. The `listener` parameter, `details`, provides the stick's offset from the center of the base (ranging from -1.0 to +1.0). |
+| `period`                  | (Optional) The frequency at which the `listener` callback is triggered from the moment the stick is dragged. The default is 100 milliseconds.                                                                                         |
+| `mode`                    | (Optional) The possible direction mode of the joystick stick. The default mode is `all`, allowing movement in any direction: vertical, horizontal, and diagonal.                                                                      |
+| `includeInitialAnimation` | (Optional) Decides if the stick's initial movement animation should be included. By default [true].                                                                                                                                   |
 
 This information clarifies the purpose and usage of each parameter for the `Joystick` widget.
 
@@ -53,13 +56,13 @@ This information clarifies the purpose and usage of each parameter for the `Joys
 These modes define how the joystick stick can be moved, providing flexibility in tailoring the
 joystick's behavior to specific requirements.
 
-![Joystick Vertical](https://i.giphy.com/media/FXQG3ttV35Ca5L5ZA7/giphy.gif "Joystick Vertical")
-![Joystick Horizontal](https://i.giphy.com/media/SN9YMtBKaHLkw5iIvB/giphy.gif "Joystick Horizontal")
-![Joystick Horizontal And Vertical](https://i.giphy.com/media/znAdOQr52MmKTssc91/giphy.gif "Joystick Horizontal And Vertical")
+![Joystick Vertical](https://i.giphy.com/media/iB0a2rlSoVELXhLPc7/giphy.gif "Joystick Vertical")
+![Joystick Horizontal](https://i.giphy.com/media/HoSUrgXNYHwd4QGhqv/giphy.gif "Joystick Horizontal")
+![Joystick Horizontal And Vertical](https://i.giphy.com/media/CbUaPqNGNq1x7AhlQD/giphy.gif "Joystick Horizontal And Vertical")
 
 ### Joystick Area
 
-![Joystick](https://i.giphy.com/media/2uFUWJcOaaTPFbIFBd/giphy.gif "Joystick Area")
+![Joystick](https://i.giphy.com/media/yrh41z8I7t7Zo8ib9D/giphy.gif "Joystick Area")
 
 The `JoystickArea` widget allows you to render a joystick anywhere within a designated area when the
 user interacts with it. It shares similar properties with the `Joystick` widget.
@@ -85,28 +88,39 @@ to control the initial alignment and include child widgets for a more versatile 
 
 ### Customization
 
-![Square Joystick](https://i.giphy.com/media/kjGJmILAeBJFXGtcgt/giphy.gif "Square Joystick")
-
 **Customization Options:**
 
-Both the `Joystick` and `JoystickArea` widgets offer a range of customization options, allowing you
-to personalize their appearance and behavior to suit your specific requirements.
+The `Joystick` and `JoystickArea` widgets are highly customizable, allowing you to tailor their appearance and behavior to fit your application's unique requirements. Below are the parameters you can adjust:
 
-| Parameter               | Description                                                                                                                                                                                                                            |
-|-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `base`                  | (Optional) The widget responsible for rendering the joystick's base. The default is `JoystickBase`.                                                                                                                                    |
-| `stick`                 | (Optional) The widget that defines the appearance of the joystick stick. It is centered within the `base` widget. The default is `JoystickStick`.                                                                                      |
-| `stickOffsetCalculator` | (Optional) Determines the stick's offset based on the starting position of the stick drag and its current position. The package currently supports circle and rectangle joystick shapes. The default is `CircleStickOffsetCalculator`. |
+| Parameter               | Description                                                                                                                                                                                                                                                                                                                                  |
+|-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `base`                  | (Optional) The widget responsible for rendering the joystick's base. By default, it uses `JoystickBase`, but you can replace it with any widget to change its look. For example, you can use a custom image or a different shape.                                                                                                            |
+| `stick`                 | (Optional) The widget that defines the appearance of the joystick stick. It is centered within the `base` widget. The default is `JoystickStick`, but you can customize it to be any widget, such as an icon, image, or animated widget.                                                                                                     |
+| `stickOffsetCalculator` | (Optional) A function that determines the stick's offset based on the starting position of the stick drag and its current position. The package supports circular and rectangular shapes through `CircleStickOffsetCalculator` and `RectangleStickOffsetCalculator` respectively. You can create custom offset calculators for other shapes. |
 
 These customization parameters empower you to create distinctive and unique joystick experiences for
 your Flutter applications.
 
+**Examples:**
+
+| Code                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Example                                                                                      |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
+| <pre>Joystick(<br>  base: JoystickBase(<br>    decoration: JoystickBaseDecoration(<br>      middleCircleColor: Colors.red.shade400,<br>      drawOuterCircle: false,<br>      drawInnerCircle: false,<br>      boxShadowColor: Colors.red.shade100,<br>    ),<br>  ),<br>  stick: JoystickStick(<br>    decoration: JoystickStickDecoration(<br>      color: Colors.red,<br>    ),<br>  ),<br>  listener: (details) {..},<br>)</pre>                                                                                | ![Red Joystick](https://i.giphy.com/media/JXJcWRyq5d8sPQkYJX/giphy.gif "Red Joystick")       |
+| <pre>Joystick(<br>  base: JoystickBase(<br>  decoration: JoystickBaseDecoration(<br>    color: Colors.black,<br>    drawOuterCircle: false,<br>  ),<br>  arrowsDecoration: JoystickArrowsDecoration(<br>      color: Colors.blue,<br>    ),<br>  ),<br>  listener: (details) {..},<br>)</pre>                                                                                                                                                                                                                       | ![Black Joystick](https://i.giphy.com/media/OdvkaWwrRCuwX8VgFw/giphy.gif "Black Joystick")   |
+| <pre>Joystick(<br>  includeInitialAnimation: false,<br>  base: JoystickBase(<br>    decoration: JoystickBaseDecoration(<br>      color: Colors.orange,<br>    ),<br>    arrowsDecoration: JoystickArrowsDecoration(<br>    color: Colors.grey,<br>    enableAnimation: false,<br>    ),<br>  ),<br>  stick: JoystickStick(<br>    decoration: JoystickStickDecoration(<br>      color: Colors.grey,<br>      shadowColor: Colors.white.withOpacity(0.5)<br>    ),<br>  ),<br>  listener: (details) {..},<br>)</pre> | ![Orange Joystick](https://i.giphy.com/media/Be9jXR9AMAImgDjeAH/giphy.gif "Orange Joystick") |
+| <pre>Joystick(<br>  base: JoystickSquareBase(),<br>  stickOffsetCalculator: const RectangleStickOffsetCalculator(),<br>  listener: (details) {..},<br>)</pre>                                                                                                                                                                                                                                                                                                                                                       | ![Square Joystick](https://i.giphy.com/media/72JO9ALy9ZeXgrWKIR/giphy.gif "Square Joystick") |
+| <pre>Joystick(<br>  stick: const CircleAvatar(<br>    radius: 30,<br>    child: FlutterLogo(size: 50),<br>  ),<br>  base: Container(<br>    width: 200,<br>    height: 200,<br>    decoration: const BoxDecoration(<br>      color: Colors.grey,<br>      shape: BoxShape.circle,<br>    ),<br>  ),<br>  listener: (details) {..},<br>)</pre>                                                                                                                                                                       | ![Custom Joystick](https://i.giphy.com/media/EZ1MZodAC8RtdYO3jQ/giphy.gif "Custom Joystick") |
+
+These examples highlight the flexibility of the joystick widget and provide a foundation for you to create your own customized joystick designs.
+
 ## Donate
 
-If you find this package helpful and want to support the developer, consider making a donation:
+If you find this package helpful and would like to support its continued development, please consider making a donation. Your contributions are greatly appreciated and motivate the further enhancement of this and other plugins.
 
 [![Donate](https://www.paypalobjects.com/en_US/PL/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=QE4E8RX8FW6P4)
 [![Buy Me A Coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=rebeloid&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff)](https://www.buymeacoffee.com/rebeloid)
 [![PayPal](https://img.shields.io/badge/Donate-PayPal-066BB7?logo=paypal)](https://paypal.me/pavelzaichyk)
 
-Your contributions are greatly appreciated and motivate further development of plugins and packages.
+Your support helps in maintaining and improving this package, ensuring it remains up-to-date and useful for the community.
+
+Thank you for your generosity!

@@ -1,3 +1,9 @@
+## 0.2.0
+- Introduced the `JoystickBaseDecoration` class, enabling customization of `JoystickBase`.
+- Introduced the `JoystickStickDecoration` class, enabling customization of `JoystickStick`.
+- Introduced the `JoystickArrowsDecoration` class, enabling customization of `JoystickArrows`.
+- Expanded README.md with additional details on customizing the Joystick.
+
 ## 0.1.0
 
 - Added animation logic to the `Joystick` to animate the `JoystickStick` on load which can be toggled using `includeInitialAnimation` parameter.

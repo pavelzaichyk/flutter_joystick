@@ -34,7 +34,7 @@ class MainPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ElevatedButton(
+          Button(
             onPressed: () {
               Navigator.push(
                 context,
@@ -42,9 +42,9 @@ class MainPage extends StatelessWidget {
                     builder: (context) => const JoystickExample()),
               );
             },
-            child: const Text('Joystick'),
+            label: 'Joystick',
           ),
-          ElevatedButton(
+          Button(
             onPressed: () {
               Navigator.push(
                 context,
@@ -52,9 +52,9 @@ class MainPage extends StatelessWidget {
                     builder: (context) => const JoystickAreaExample()),
               );
             },
-            child: const Text('Joystick Area'),
+            label: 'Joystick Area',
           ),
-          ElevatedButton(
+          Button(
             onPressed: () {
               Navigator.push(
                 context,
@@ -62,7 +62,17 @@ class MainPage extends StatelessWidget {
                     builder: (context) => const SquareJoystickExample()),
               );
             },
-            child: const Text('Square Joystick'),
+            label: 'Square Joystick',
+          ),
+          Button(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const JoystickCustomizationExample()),
+              );
+            },
+            label: 'Customization',
           ),
         ],
       ),
@@ -81,11 +91,71 @@ class _JoystickExampleState extends State<JoystickExample> {
   double _x = 100;
   double _y = 100;
   JoystickMode _joystickMode = JoystickMode.all;
+
+  @override
+  void didChangeDependencies() {
+    _x = MediaQuery.of(context).size.width / 2 - ballSize / 2;
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey.shade100,
+      appBar: AppBar(
+        title: const Text('Joystick'),
+        actions: [
+          JoystickModeDropdown(
+            mode: _joystickMode,
+            onChanged: (JoystickMode value) {
+              setState(() {
+                _joystickMode = value;
+              });
+            },
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Ball(_x, _y),
+            Align(
+              alignment: const Alignment(0, 0.8),
+              child: Joystick(
+                mode: _joystickMode,
+                listener: (details) {
+                  setState(() {
+                    _x = _x + step * details.x;
+                    _y = _y + step * details.y;
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class JoystickCustomizationExample extends StatefulWidget {
+  const JoystickCustomizationExample({super.key});
+
+  @override
+  State<JoystickCustomizationExample> createState() =>
+      _JoystickCustomizationExampleState();
+}
+
+class _JoystickCustomizationExampleState
+    extends State<JoystickCustomizationExample> {
+  double _x = 100;
+  double _y = 100;
+  JoystickMode _joystickMode = JoystickMode.all;
   bool drawArrows = true;
   bool includeInitialAnimation = true;
   bool enableArrowAnimation = false;
   bool isBlueJoystick = false;
-  bool withBorderCircle = false;
+  bool withOuterCircle = false;
   Key key = UniqueKey();
 
   @override
@@ -121,16 +191,16 @@ class _JoystickExampleState extends State<JoystickExample> {
 
   void _updateBorderCircle() {
     setState(() {
-      withBorderCircle = !withBorderCircle;
+      withOuterCircle = !withOuterCircle;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: const Text('Joystick'),
+        title: const Text('Customization'),
         actions: [
           JoystickModeDropdown(
             mode: _joystickMode,
@@ -145,91 +215,78 @@ class _JoystickExampleState extends State<JoystickExample> {
       body: SafeArea(
         child: Stack(
           children: [
-            Container(
-              color: Colors.grey.shade100,
-            ),
             Ball(_x, _y),
             Align(
               alignment: const Alignment(0, 0.9),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 300.0,
-                color: Colors.blueGrey.shade700,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Joystick(
-                      includeInitialAnimation: includeInitialAnimation,
-                      key: key,
-                      base: JoystickBase(
-                        arrowsColor: isBlueJoystick
-                            ? Colors.grey.shade200
-                            : Colors.grey.shade400,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Joystick(
+                    includeInitialAnimation: includeInitialAnimation,
+                    key: key,
+                    base: JoystickBase(
+                      decoration: JoystickBaseDecoration(
                         color: isBlueJoystick
                             ? Colors.lightBlue.shade600
                             : Colors.black,
                         drawArrows: drawArrows,
-                        enableArrowAnimation: enableArrowAnimation,
-                        mode: _joystickMode,
-                        withBorderCircle: withBorderCircle,
+                        drawOuterCircle: withOuterCircle,
                       ),
-                      stick: JoystickStick(
+                      arrowsDecoration: JoystickArrowsDecoration(
                         color: isBlueJoystick
-                            ? Colors.blue.shade600
-                            : Colors.blue.shade700,
+                            ? Colors.grey.shade200
+                            : Colors.grey.shade400,
+                        enableAnimation: enableArrowAnimation,
                       ),
                       mode: _joystickMode,
-                      listener: (details) {
-                        setState(() {
-                          _x = _x + step * details.x;
-                          _y = _y + step * details.y;
-                        });
-                      },
                     ),
-                    Column(
+                    stick: JoystickStick(
+                      decoration: JoystickStickDecoration(
+                          color: isBlueJoystick
+                              ? Colors.blue.shade600
+                              : Colors.blue.shade700),
+                    ),
+                    mode: _joystickMode,
+                    listener: (details) {
+                      setState(() {
+                        _x = _x + step * details.x;
+                        _y = _y + step * details.y;
+                      });
+                    },
+                  ),
+                  SingleChildScrollView(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        buildButton(
-                          value: 'Initial Animation: $includeInitialAnimation',
-                          clickHandler: _updateInitialAnimation,
+                        Button(
+                          label: 'Initial Animation: $includeInitialAnimation',
+                          onPressed: _updateInitialAnimation,
                         ),
-                        buildButton(
-                          value: 'Draw Arrows: $drawArrows',
-                          clickHandler: _updateDrawArrows,
+                        Button(
+                          label: 'Draw Arrows: $drawArrows',
+                          onPressed: _updateDrawArrows,
                         ),
-                        buildButton(
-                          value: 'Draw Border Circle: $withBorderCircle',
-                          clickHandler: _updateBorderCircle,
+                        Button(
+                          label: 'Draw Outer Circle: $withOuterCircle',
+                          onPressed: _updateBorderCircle,
                         ),
-                        buildButton(
-                          value:
+                        Button(
+                          label:
                               'Joystick Color: ${isBlueJoystick ? 'Blue' : 'Black'}',
-                          clickHandler: _updateBlueJoystick,
+                          onPressed: _updateBlueJoystick,
                         ),
-                        buildButton(
-                          value: 'Animated Arrows? : $enableArrowAnimation',
-                          clickHandler: _updateArrowAnimation,
+                        Button(
+                          label: 'Animated Arrows : $enableArrowAnimation',
+                          onPressed: _updateArrowAnimation,
                         ),
                       ],
-                    )
-                  ],
-                ),
+                    ),
+                  )
+                ],
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildButton({required String value, required clickHandler}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: ElevatedButton(
-        onPressed: clickHandler,
-        child: Text(
-          value,
         ),
       ),
     );
@@ -257,7 +314,7 @@ class _JoystickAreaExampleState extends State<JoystickAreaExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         title: const Text('Joystick Area'),
         actions: [
@@ -283,9 +340,6 @@ class _JoystickAreaExampleState extends State<JoystickAreaExample> {
           },
           child: Stack(
             children: [
-              Container(
-                color: Colors.green,
-              ),
               Ball(_x, _y),
             ],
           ),
@@ -316,7 +370,7 @@ class _SquareJoystickExampleState extends State<SquareJoystickExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         title: const Text('Square Joystick'),
         actions: [
@@ -333,9 +387,6 @@ class _SquareJoystickExampleState extends State<SquareJoystickExample> {
       body: SafeArea(
         child: Stack(
           children: [
-            Container(
-              color: Colors.green,
-            ),
             Ball(_x, _y),
             Align(
               alignment: const Alignment(0, 0.8),
@@ -392,6 +443,24 @@ class JoystickModeDropdown extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class Button extends StatelessWidget {
+  final String label;
+  final VoidCallback? onPressed;
+
+  const Button({super.key, required this.label, this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        child: Text(label),
       ),
     );
   }

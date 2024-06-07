@@ -1,20 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_joystick/src/joystick.dart';
-import 'package:flutter_joystick/src/utils.dart';
 import 'dart:math' as math;
 
+import 'package:flutter/material.dart';
+import 'package:flutter_joystick/flutter_joystick.dart';
+
 class JoystickArrows extends StatefulWidget {
-  final Color arrowsColor;
   final JoystickMode mode;
   final double size;
-  final bool enableAnimation;
+  final JoystickArrowsDecoration? decoration;
 
   const JoystickArrows({
     super.key,
-    required this.arrowsColor,
     required this.mode,
     required this.size,
-    required this.enableAnimation,
+    this.decoration,
   });
 
   @override
@@ -65,9 +63,8 @@ class _JoystickArrowsState extends State<JoystickArrows>
       child: CustomPaint(
         painter: _ArrowPainter(
           value: (controller.value * 100).toInt(),
-          color: widget.arrowsColor,
           mode: widget.mode,
-          enableAnimation: widget.enableAnimation,
+          decoration: widget.decoration ?? JoystickArrowsDecoration(),
         ),
       ),
     );
@@ -76,21 +73,19 @@ class _JoystickArrowsState extends State<JoystickArrows>
 
 class _ArrowPainter extends CustomPainter {
   final int value;
-  final Color color;
   final JoystickMode mode;
-  final bool enableAnimation;
+  final JoystickArrowsDecoration decoration;
 
   _ArrowPainter({
     required this.value,
-    required this.color,
     required this.mode,
-    required this.enableAnimation,
+    required this.decoration,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = color
+      ..color = decoration.color
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3;
 
@@ -201,13 +196,34 @@ class _ArrowPainter extends CustomPainter {
   }
 
   evaluateColor(bool condition) {
-    Color resultColor = color;
-    if (!condition && enableAnimation) {
-      resultColor = ColorUtils.darken(color, 0.14);
+    Color resultColor = decoration.color;
+    if (!condition && decoration.enableAnimation) {
+      resultColor = ColorUtils.darken(decoration.color, 0.14);
     }
     return resultColor;
   }
 
   @override
   bool shouldRepaint(_ArrowPainter oldDelegate) => oldDelegate.value != value;
+}
+
+@immutable
+class JoystickArrowsDecoration {
+  final Color color;
+  final bool enableAnimation;
+
+  const JoystickArrowsDecoration._internal({
+    required this.color,
+    required this.enableAnimation,
+  });
+
+  factory JoystickArrowsDecoration({
+    Color? color,
+    bool enableAnimation = true,
+  }) {
+    return JoystickArrowsDecoration._internal(
+      color: color ?? ColorUtils.defaultArrowsColor,
+      enableAnimation: enableAnimation,
+    );
+  }
 }
