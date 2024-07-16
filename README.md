@@ -14,6 +14,7 @@ Flutter Joystick is a virtual joystick package for Flutter applications that pro
 joystick components for user interface design.
 
 [See Examples](https://joystick.rebeloid.com)
+[Google Play](https://play.google.com/store/apps/details?id=com.rebeloid.flutter_joystick_example)
 
 ## Table of Contents
 
@@ -21,6 +22,7 @@ joystick components for user interface design.
 - [Joystick Area](#joystick-area)
 - [Customization](#customization)
 - [Donate](#donate)
+- [Contributors](#contributors)
 
 ### Joystick
 
@@ -124,3 +126,11 @@ If you find this package helpful and would like to support its continued develop
 Your support helps in maintaining and improving this package, ensuring it remains up-to-date and useful for the community.
 
 Thank you for your generosity!
+
+## Contributors
+
+<div align="left">
+  <a href="https://github.com/pavelzaichyk/flutter_joystick/graphs/contributors">
+   <img src="https://contrib.rocks/image?repo=pavelzaichyk/flutter_joystick"/>
+  </a>
+</div>

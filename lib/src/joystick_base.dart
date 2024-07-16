@@ -300,7 +300,8 @@ class JoystickBaseDecoration {
       drawOuterCircle: drawOuterCircle,
       outerCircleColor: outerCircleColor ?? baseColor,
       drawMiddleCircle: drawMiddleCircle,
-      middleCircleColor: middleCircleColor ?? ColorUtils.lighten(baseColor, 0.05),
+      middleCircleColor:
+          middleCircleColor ?? ColorUtils.lighten(baseColor, 0.05),
       drawInnerCircle: drawInnerCircle,
       innerCircleColor: innerCircleColor ?? baseColor,
       boxShadows: boxShadows ??

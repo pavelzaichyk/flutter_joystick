@@ -1,3 +1,7 @@
+## 0.2.1
+- Update an example app
+- Update README.md
+
 ## 0.2.0
 - Introduced the `JoystickBaseDecoration` class, enabling customization of `JoystickBase`.
 - Introduced the `JoystickStickDecoration` class, enabling customization of `JoystickStick`.
