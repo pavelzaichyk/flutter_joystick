@@ -39,6 +39,9 @@ class Joystick extends StatefulWidget {
   /// Decides if the stick's initial movement animation should be included. By default [true].
   final bool includeInitialAnimation;
 
+  /// HitTestBehavior of the joystick
+  final HitTestBehavior? hitTestBehavior;
+
   const Joystick({
     super.key,
     required this.listener,
@@ -51,6 +54,7 @@ class Joystick extends StatefulWidget {
     this.onStickDragStart,
     this.onStickDragEnd,
     this.includeInitialAnimation = true,
+    this.hitTestBehavior,
   });
 
   @override
@@ -91,6 +95,7 @@ class _JoystickState extends State<Joystick> {
           child: widget.base ?? JoystickBase(mode: widget.mode),
         ),
         GestureDetector(
+          behavior: widget.hitTestBehavior,
           onPanStart: (details) => _stickDragStart(details.globalPosition),
           onPanUpdate: (details) => _stickDragUpdate(details.globalPosition),
           onPanEnd: (details) => _stickDragEnd(),
