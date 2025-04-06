@@ -186,6 +186,7 @@ class _JoystickState extends State<Joystick> {
   }
 
   void _runCallback() {
+    _callbackTimer?.cancel();
     _callbackTimer = Timer.periodic(widget.period, (timer) {
       widget.listener(StickDragDetails(_stickOffset.dx, _stickOffset.dy));
     });
