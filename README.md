@@ -103,6 +103,32 @@ The `Joystick` and `JoystickArea` widgets are highly customizable, allowing you 
 These customization parameters empower you to create distinctive and unique joystick experiences for
 your Flutter applications.
 
+**Snapping Feature:**
+
+The joystick supports a snapping feature that helps users by automatically aligning the stick to specific positions. This is controlled by the `snappingThreshold` parameter in both `CircleStickOffsetCalculator` and `RectangleStickOffsetCalculator`.
+
+For circular joysticks (`CircleStickOffsetCalculator`), snapping occurs to:
+- Cardinal directions (0°, 90°, 180°, 270°)
+- Diagonal directions (45°, 135°, 225°, 315°)
+- The border of the circle when near the edge
+
+For rectangular joysticks (`RectangleStickOffsetCalculator`), snapping occurs to:
+- The edges of the rectangle
+- The corners of the rectangle
+- The center (zero position)
+
+The `snappingThreshold` value determines how close to a snap point the stick needs to be to trigger snapping. A value of 0.0 disables snapping, while larger values make snapping more aggressive.
+
+Example usage:
+```dart
+Joystick(
+  stickOffsetCalculator: CircleStickOffsetCalculator(snappingThreshold: 0.2),
+  listener: (details) {
+    // Handle joystick movement
+  },
+)
+```
+
 **Examples:**
 
 | Code                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Example                                                                                      |

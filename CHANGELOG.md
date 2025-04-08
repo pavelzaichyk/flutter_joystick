@@ -1,3 +1,8 @@
+## 0.2.2
+
+- Added snapping feature for both circular and rectangular joysticks.
+- Fixed the issue where endless callbacks were triggered if the controller was started few times.
+
 ## 0.2.1
 - Update an example app
 - Update README.md
