@@ -25,7 +25,7 @@ class _JoystickInScrollViewState extends State<JoystickInScrollView> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: const Text('Joystick'),
+        title: const Text('Joystick in ScrollView'),
         actions: [
           JoystickModeDropdown(
             mode: _joystickMode,
