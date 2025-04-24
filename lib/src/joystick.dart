@@ -94,6 +94,11 @@ class _JoystickState extends State<Joystick> {
           onPanStart: (details) => _stickDragStart(details.globalPosition),
           onPanUpdate: (details) => _stickDragUpdate(details.globalPosition),
           onPanEnd: (details) => _stickDragEnd(),
+          onVerticalDragStart: (details) =>
+              _stickDragStart(details.globalPosition),
+          onVerticalDragUpdate: (details) =>
+              _stickDragUpdate(details.globalPosition),
+          onVerticalDragEnd: (details) => _stickDragEnd(),
           child: widget.stick,
         ),
       ],
