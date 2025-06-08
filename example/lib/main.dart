@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
 
+import 'joystick_in_scrollview.dart';
+
 void main() {
   runApp(const JoystickExampleApp());
 }
@@ -73,6 +75,16 @@ class MainPage extends StatelessWidget {
               );
             },
             label: 'Customization',
+          ),
+          Button(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const JoystickInScrollView()),
+              );
+            },
+            label: 'Joystick in ScrollView',
           ),
         ],
       ),
