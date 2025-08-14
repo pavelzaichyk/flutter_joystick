@@ -83,25 +83,24 @@ class _JoystickState extends State<Joystick> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment(_stickOffset.dx, _stickOffset.dy),
-      children: [
-        Container(
-          key: _baseKey,
-          child: widget.base ?? JoystickBase(mode: widget.mode),
-        ),
-        GestureDetector(
-          onPanStart: (details) => _stickDragStart(details.globalPosition),
-          onPanUpdate: (details) => _stickDragUpdate(details.globalPosition),
-          onPanEnd: (details) => _stickDragEnd(),
-          onVerticalDragStart: (details) =>
-              _stickDragStart(details.globalPosition),
-          onVerticalDragUpdate: (details) =>
-              _stickDragUpdate(details.globalPosition),
-          onVerticalDragEnd: (details) => _stickDragEnd(),
-          child: widget.stick,
-        ),
-      ],
+    return GestureDetector(
+      onPanStart: (details) => _stickDragStart(details.globalPosition),
+      onPanUpdate: (details) => _stickDragUpdate(details.globalPosition),
+      onPanEnd: (details) => _stickDragEnd(),
+      onVerticalDragStart: (details) => _stickDragStart(details.globalPosition),
+      onVerticalDragUpdate: (details) =>
+          _stickDragUpdate(details.globalPosition),
+      onVerticalDragEnd: (details) => _stickDragEnd(),
+      child: Stack(
+        alignment: Alignment(_stickOffset.dx, _stickOffset.dy),
+        children: [
+          Container(
+            key: _baseKey,
+            child: widget.base ?? JoystickBase(mode: widget.mode),
+          ),
+          widget.stick,
+        ],
+      ),
     );
   }
 
