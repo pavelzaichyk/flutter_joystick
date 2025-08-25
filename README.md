@@ -15,7 +15,7 @@
 Flutter Joystick is a virtual joystick package for Flutter applications that provides interactive
 joystick components for user interface design.
 
-[See Examples](https://joystick.rebeloid.com)
+[See Examples](https://joystick.pavelzaichyk.com)
 [Google Play](https://play.google.com/store/apps/details?id=com.rebeloid.flutter_joystick_example)
 
 ## Table of Contents
