@@ -1,4 +1,4 @@
-library flutter_joystick;
+library;
 
 export 'src/joystick.dart';
 export 'src/joystick_area.dart';

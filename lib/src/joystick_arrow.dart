@@ -195,7 +195,7 @@ class _ArrowPainter extends CustomPainter {
     canvas.drawPath(path, paint..color = evaluateColor(value > 66));
   }
 
-  evaluateColor(bool condition) {
+  Color evaluateColor(bool condition) {
     Color resultColor = decoration.color;
     if (!condition && decoration.enableAnimation) {
       resultColor = ColorUtils.darken(decoration.color, 0.14);

@@ -6,6 +6,8 @@
 [![Monthly Downloads](https://badgen.net/pub/dm/flutter_joystick)](https://pub.dev/packages/flutter_joystick/score)
 [![Pub Points](https://badgen.net/pub/points/flutter_joystick)](https://pub.dev/packages/flutter_joystick/score)
 [![Flutter Platform](https://badgen.net/pub/flutter-platform/flutter_joystick)](https://pub.dev/packages/flutter_joystick)
+[![Stars](https://badgen.net/github/stars/pavelzaichyk/flutter_joystick)](https://github.com/pavelzaichyk/flutter_joystick/)
+[![Repo Dependents](https://badgen.net/github/dependents-repo/pavelzaichyk/flutter_joystick)](https://github.com/pavelzaichyk/flutter_joystick/)
 
 [![Buy Me A Coffee](https://img.shields.io/badge/Donate-Buy%20me%20a%20coffee-FFDD00?logo=buymeacoffee)](https://www.buymeacoffee.com/rebeloid)
 [![PayPal](https://img.shields.io/badge/Donate-PayPal-066BB7?logo=paypal)](https://paypal.me/pavelzaichyk)
@@ -15,7 +17,8 @@
 Flutter Joystick is a virtual joystick package for Flutter applications that provides interactive
 joystick components for user interface design.
 
-[See Examples](https://joystick.pavelzaichyk.com)
+See Examples: 
+[Web](https://joystick.pavelzaichyk.com)
 [Google Play](https://play.google.com/store/apps/details?id=com.rebeloid.flutter_joystick_example)
 
 ## Table of Contents

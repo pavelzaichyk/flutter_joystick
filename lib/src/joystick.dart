@@ -113,7 +113,7 @@ class _JoystickState extends State<Joystick> {
     }
   }
 
-  _moveInXAxis(Duration duration) async {
+  Future<void> _moveInXAxis(Duration duration) async {
     Offset moveLeft = Offset(-_moveValue, 0);
     Offset moveRight = Offset(_moveValue, 0);
     Offset center = _startDragStickPosition;
@@ -132,7 +132,7 @@ class _JoystickState extends State<Joystick> {
     );
   }
 
-  _moveInYAxis(Duration duration) async {
+  Future<void> _moveInYAxis(Duration duration) async {
     Offset moveTop = Offset(0, -_moveValue);
     Offset moveBottom = Offset(0, _moveValue);
     Offset center = _startDragStickPosition;

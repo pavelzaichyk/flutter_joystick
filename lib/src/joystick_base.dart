@@ -307,7 +307,7 @@ class JoystickBaseDecoration {
       boxShadows: boxShadows ??
           [
             BoxShadow(
-              color: boxShadowColor ?? baseColor.withOpacity(0.16),
+              color: boxShadowColor ?? baseColor.withValues(alpha: 0.16),
               spreadRadius: 10,
               blurRadius: 12,
               offset: const Offset(0, 4),

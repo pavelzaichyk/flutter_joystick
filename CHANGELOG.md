@@ -1,3 +1,9 @@
+## 0.2.3
+
+- Fixed static analysis warnings: removed the unnecessary library name, added missing type annotations, and replaced deprecated `withOpacity` with `withValues`.
+- Updated `flutter_lints` to ^6.0.0 and excluded `build/**` from analysis.
+- Updated README.md with GitHub badges and web/Google Play example links.
+
 ## 0.2.2
 
 - Added snapping feature for both circular and rectangular joysticks.

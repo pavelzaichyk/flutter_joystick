@@ -56,7 +56,7 @@ class JoystickStickDecoration {
   }) {
     return JoystickStickDecoration._internal(
       color: color,
-      shadowColor: shadowColor ?? color.withOpacity(0.5),
+      shadowColor: shadowColor ?? color.withValues(alpha: 0.5),
     );
   }
 }
